@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /kiosk/
+Sitemap: https://sweet-beignet-eea10a.netlify.app/sitemap.xml

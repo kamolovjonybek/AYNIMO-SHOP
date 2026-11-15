@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>AYNIMO — Sehrli oyna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap">
+<style>
+:root{--bg:#0e0f11;--pane:#16181b;--line:#2a2d32;--fg:#f2f1ee;--fg2:#a9adb4;--fg3:#6f747c;
+  --sans:"Jost",system-ui,sans-serif;--display:"Bodoni Moda",Georgia,serif;--ease:cubic-bezier(.22,1,.36,1);color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:18px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+.app{height:100%;display:grid;grid-template-columns:1fr 500px}
+/* ---------- stage ---------- */
+.stage{position:relative;background:radial-gradient(130% 100% at 50% 20%,#23262b,#0b0c0e);overflow:hidden}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#self{transform:scaleX(-1)}
+#out{opacity:0;transition:opacity .8s}
+#out.on{opacity:1}
+#out.on~#self{inset:auto 28px 28px auto;width:17%;height:auto;aspect-ratio:3/4;border-radius:10px;border:1px solid var(--line);z-index:4;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.brandbar{position:absolute;left:0;right:0;top:0;z-index:6;display:flex;justify-content:space-between;align-items:center;padding:26px 34px;pointer-events:none}
+.brandbar .lg{font-size:22px;letter-spacing:.42em;font-weight:400}
+.brandbar .st{font-size:14px;letter-spacing:.1em;color:var(--fg2);display:flex;gap:16px;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;background:#ff6b5a;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+/* attract screen */
+.attract{position:absolute;inset:0;z-index:5;display:grid;place-content:center;justify-items:center;text-align:center;gap:22px;padding:60px;
+  background:radial-gradient(120% 90% at 50% 35%,rgba(22,24,27,.6),rgba(8,9,11,.96));transition:opacity .6s}
+.attract.off{opacity:0;pointer-events:none}
+.attract .k{font-size:13px;letter-spacing:.3em;color:var(--fg3);text-transform:uppercase}
+.attract h1{font-family:var(--display);font-size:clamp(46px,6.4vw,104px);line-height:.98;font-weight:400}
+.attract h1 em{font-style:italic;color:var(--fg2)}
+.attract p{max-width:21em;color:var(--fg2);font-size:clamp(17px,1.5vw,22px);line-height:1.5;font-weight:300}
+.steps{display:flex;gap:30px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+.steps div{display:grid;gap:6px;justify-items:center;font-size:14px;color:var(--fg2);max-width:150px}
+.steps b{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-weight:400;font-size:16px;color:var(--fg)}
+.qrbox{display:flex;align-items:center;gap:16px;margin-top:14px;padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03)}
+.qrbox img{width:96px;height:96px;border-radius:6px;background:#fff;padding:6px}
+.qrbox div{text-align:left;font-size:14px;color:var(--fg2);line-height:1.5;max-width:15em}
+.qrbox b{display:block;color:var(--fg);font-size:15px;font-weight:500;margin-bottom:2px}
+/* overlay messages */
+.msg{position:absolute;inset:0;z-index:7;display:grid;place-content:center;justify-items:center;text-align:center;gap:14px;padding:60px;background:rgba(9,10,12,.9);backdrop-filter:blur(8px);transition:opacity .4s}
+.msg.off{opacity:0;pointer-events:none}
+.msg h3{font-family:var(--display);font-size:clamp(30px,3.6vw,52px)}
+.msg p{color:var(--fg2);max-width:26em;font-size:18px;line-height:1.5}
+.msg .big{display:inline-flex;align-items:center;justify-content:center;height:68px;padding:0 42px;border-radius:40px;background:var(--fg);color:#111;font-size:19px;font-weight:500;margin-top:8px}
+.timer{position:absolute;left:34px;bottom:30px;z-index:6;font-size:15px;color:var(--fg2);letter-spacing:.08em;background:rgba(0,0,0,.45);padding:8px 16px;border-radius:20px}
+.timer:empty{display:none}
+/* ---------- picker ---------- */
+.side{background:var(--pane);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.side header{padding:24px 26px 14px;border-bottom:1px solid var(--line)}
+.side header h2{font-family:var(--display);font-size:30px;font-weight:400}
+.side header p{color:var(--fg3);font-size:14px;margin-top:4px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 26px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;display:block;height:44px;padding:0 20px;border-radius:24px;border:1px solid var(--line);font-size:15px;color:var(--fg2);white-space:nowrap}
+.tabs button.on{background:var(--fg);color:#111;border-color:var(--fg)}
+.grid{flex:1;overflow:auto;padding:18px 26px 26px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:max-content;gap:14px;align-content:start}
+.card{display:block;width:100%;padding:0;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#1b1e22;transition:transform .25s var(--ease),border-color .25s}
+.card:active{transform:scale(.97)}
+.card.on{border-color:var(--fg)}
+.card .ph{width:100%;height:clamp(190px,24vh,320px);background:#23262b;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.card .tx{padding:11px 13px;display:grid;gap:3px;text-align:left}
+.card .tx b{font-weight:400;font-size:16px}
+.card .tx span{color:var(--fg3);font-size:14px}
+.cols{display:flex;gap:6px;padding:0 13px 12px}
+.cols i{width:16px;height:16px;border-radius:50%;border:1px solid rgba(255,255,255,.25)}
+.side footer{padding:18px 26px max(18px,env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:grid;gap:10px}
+.big2{height:62px;border-radius:8px;background:var(--fg);color:#111;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px}
+.big2:disabled{opacity:.3}
+.ghost{height:52px;border-radius:8px;border:1px solid var(--line);font-size:15px;color:var(--fg2)}
+.varrow{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.varrow button{flex:none;display:flex;min-width:0;align-items:center;gap:8px;padding:6px 14px 6px 6px;border:1px solid var(--line);border-radius:30px;font-size:14px}
+.varrow button img{width:34px;height:44px;object-fit:cover;border-radius:4px}
+.varrow button.on{border-color:var(--fg)}
+@media (max-width:1100px){.app{grid-template-columns:1fr 400px}.grid{grid-template-columns:1fr}}
+@media (max-width:820px){.app{grid-template-columns:1fr;grid-template-rows:1fr auto}.side{border-left:0;border-top:1px solid var(--line);max-height:50%}.card .ph{height:150px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="stage" id="stage">
+    <video id="out" playsinline autoplay muted></video>
+    <video id="self" playsinline autoplay muted></video>
+    <div class="brandbar"><span class="lg">AYNIMO</span><span class="st" id="st"></span></div>
+    <div class="attract" id="attract">
+      <span class="k">Sehrli oyna · sun'iy intellekt</span>
+      <h1>Kiyimni <em>kiymasdan</em><br>o'zingizda ko'ring</h1>
+      <p>O'ngdagi ro'yxatdan kiyim tanlang. Kamera sizni ko'radi va kiyimni ustingizga kiydiradi — yechinib o'tirish shart emas.</p>
+      <p style="font-size:13px;opacity:.6">Kamera tasviri Decart kompaniyasining AI serverida jonli qayta ishlanadi; Decart uni o'z shartlariga ko'ra saqlashi va xizmatini yaxshilash uchun ishlatishi mumkin. 13 yoshdan kichiklar uchun emas.</p>
+      <div class="steps">
+        <div><b>1</b>Kiyimni tanlang</div>
+        <div><b>2</b>Oyna oldida turing</div>
+        <div><b>3</b>Rangini almashtiring</div>
+      </div>
+      <div class="qrbox" id="qrbox" hidden><img id="qrimg" alt="QR kod"><div><b>Telefoningizda davom eting</b>QR kodni skanerlang — shu kiyimlar telefoningizda ochiladi, uyda ham kiyib ko'rasiz.</div></div>
+    </div>
+    <div class="msg off" id="msg"></div>
+    <div class="timer" id="timer"></div>
+  </section>
+  <aside class="side">
+    <header><h2>Kiyimni tanlang</h2><p id="cnt">Yuklanmoqda…</p></header>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="grid" id="grid"></div>
+    <footer>
+      <div class="varrow" id="vars"></div>
+      <button class="big2" id="go" disabled>Kiyib ko'rish</button>
+      <button class="ghost" id="stop" hidden>To'xtatish</button>
+    </footer>
+  </aside>
+</div>
+<script src="../vendor/supabase.min.js"></script>
+<script>
+(function(){
+"use strict";
+const SB_URL="https://woxpyneklstqcleipcxt.supabase.co",SB_KEY="sb_publishable_Inf-7Obvi8r-DY-lDaSwJQ_6fPbKOtE",SITE="https://sweet-beignet-eea10a.netlify.app";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>(n||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ")+" so'm";
+const src=u=>!u?"":/^(https?:|data:)/.test(u)?u:"../"+String(u).replace(/^\/+/,"");
+const CATN={outer:"Ustki kiyim",classic:"Klassik",knit:"Trikotaj",shirt:"Ko'ylak",pants:"Shimlar",shoes:"Oyoq kiyim",acc:"Aksessuar"};
+const COL_EN={"antrasit":"charcoal","kulrang":"grey","och kulrang":"light grey","kulrang-bej":"greige","sut rang":"cream","bej":"beige","qum rang":"sand beige","mokko":"mocha brown","jigarrang":"brown","to'q ko'k":"navy","ko'k":"blue","havorang":"sky blue","bordo":"burgundy","oq":"white","qora":"black","terrakota":"terracotta","xaki":"khaki","kulrang-ko'k":"slate blue","oq-qora":"black and white striped"};
+const IDLE_MS=100000;
+let sb=null,P=[],CFG={},cat="all",sel=null,vi=0,S={client:null,stream:null,left:0,timer:0,alive:false},idleT=0;
+
+/* ---------- data ---------- */
+async function load(){
+  try{
+    sb=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false}});
+    const [pr,st]=await Promise.all([
+      sb.from("products").select("*,variants(*),categories(tryon_default)").eq("active",true).order("sort").order("sort",{referencedTable:"variants"}),
+      sb.from("settings").select("key,value")]);
+    if(pr.error)throw pr.error;
+    const S2=Object.fromEntries((st.data||[]).map(r=>[r.key,r.value]));
+    CFG={mode:S2.tryon_mode||"off",on:S2.tryon_enabled!==false,sec:(S2.tryon_limits||{}).max_seconds||90,site:S2.site_url||SITE};
+    P=(pr.data||[]).filter(p=>p.tryon&&p.tryon_prompt&&(!p.categories||p.categories.tryon_default!==false)&&(p.variants||[]).some(v=>v.images&&v.images.length));
+    draw();qr();
+  }catch(e){console.error(e);$("#cnt").textContent="Ma'lumot yuklanmadi — internetni tekshiring"}
+}
+function qr(){const d="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGAQMAAACzVW0eAAAABlBMVEUWFxr///+dMoIyAAABRElEQVR42u1YQQ7DIAyLxgN4El/nSTwAKbMd2p02aZfJhyEOtPRgJbGdNPLN2vG/+XizAqstfDLxImLwOcZ+xLv1qxtgG4AEbJvnaDjjeblgQ5RaToauzkBohW0VpNg97bDl3Kq0bRY31lvOg7Nb1VvxdNzbiKe1yNMBqrZbXUzqrU/sqrS79kywEUzPYqu0d7jUG5SN2nsU+LhDTxNsKUi39gKYjy9s1RhKju7AuDGSJhoCeu4+BTJK32y8Xl5APIphP7yw4QLzKH27thEXKHEMFyBFpTh9fAFgUirXlFYXDaGyzepAqkHaooNJ3JTKq/sVMBts1F76ghS4XvrE7epD5K0C6aNvNWe9tG7Z8PQ1Z9VByXWbs0iKWS2cz3xanduxKmU2/WbAw4JSYKc5K69ZpuzeiqdNzhXql6z89P8n68ubJ2CJ2YPj2nUCAAAAAElFTkSuQmCC";if(!d||d.indexOf("data:")!==0)return;$("#qrimg").src=d;$("#qrbox").hidden=false}
+function draw(){
+  const cats=[...new Set(P.map(p=>p.category))];
+  $("#tabs").innerHTML=[["all","Hammasi"],...cats.map(c=>[c,CATN[c]||c])]
+    .map(([k,n])=>`<button data-c="${k}" class="${k===cat?"on":""}">${n}</button>`).join("");
+  const list=P.filter(p=>cat==="all"||p.category===cat);
+  $("#cnt").textContent=`${list.length} ta kiyim · barmoq bilan tanlang`;
+  $("#grid").innerHTML=list.map(p=>{const v=p.variants[0];return `<div class="card ${sel&&sel.id===p.id?"on":""}" data-id="${esc(p.id)}" role="button" tabindex="0">
+    <div class="ph"><img src="${esc(src(v.images[0]))}" alt="" loading="lazy"></div>
+    <div class="tx"><b>${esc(p.name)}</b><span>${fmt(p.price)}</span></div>
+    <div class="cols">${p.variants.slice(0,5).map(v=>`<i style="background:${esc(v.hex)}"></i>`).join("")}</div></div>`}).join("");
+  $$("#tabs button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;draw()});
+  const pick=c=>{sel=P.find(p=>p.id===c.dataset.id);vi=0;draw();vars();poke()};
+  $$("#grid .card").forEach(c=>{c.onclick=()=>pick(c);c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(c)}}});
+  vars();
+}
+function vars(){
+  const go=$("#go");
+  if(!sel){$("#vars").innerHTML="";go.disabled=true;go.textContent="Kiyimni tanlang";return}
+  go.disabled=false;go.textContent=S.client?"Shu kiyimni kiydirish":"Kiyib ko'rish";
+  $("#vars").innerHTML=sel.variants.map((v,j)=>`<button data-j="${j}" class="${j===vi?"on":""}"><img src="${esc(src(v.images[0]))}" alt="">${esc(v.color)}</button>`).join("");
+  $$("#vars button").forEach(b=>b.onclick=()=>{vi=+b.dataset.j;vars();poke();if(S.client)apply()});
+}
+
+/* ---------- messages ---------- */
+const msg=(h,t,btn,fn)=>{const m=$("#msg");m.classList.remove("off");
+  m.innerHTML=`<h3>${h}</h3><p>${t}</p>${btn?`<button class="big" id="mB">${btn}</button>`:""}`;
+  if(btn)$("#mB").onclick=fn||start};
+const hideMsg=()=>$("#msg").classList.add("off");
+const attract=on=>$("#attract").classList.toggle("off",!on);
+
+/* ---------- try-on ---------- */
+const prompt1=()=>{const v=sel.variants[vi],c=COL_EN[String(v.color).toLowerCase()]||"";
+  return String(sel.tryon_prompt).replace("{color}",c).replace(/\s+/g," ").trim()};
+async function garment(){const r=await fetch(src(sel.variants[vi].images[0]));if(!r.ok)throw new Error("img");return r.blob()}
+async function apply(){if(!S.client)return;try{await S.client.set({prompt:prompt1(),image:await garment(),enhance:false})}catch(e){console.warn("set",e)}}
+async function start(){
+  if(!sel)return;
+  if(S.client)return apply();
+  if(CFG.mode!=="builtin"||!CFG.on){
+    msg("Hozircha tayyor emas","Sehrli oyna uchun admin panelda «Kiyib ko'rish usuli» → «Ichki (Decart kaliti)» qilib qo'ying va Decart kalitini kiriting.");return}
+  attract(false);hideMsg();
+  let sdk;try{sdk=await import(new URL("../vendor/decart-sdk.min.js",location.href).href)}
+  catch(e){msg("Yuklab bo'lmadi","Internet aloqasini tekshiring.","Qayta urinish");return}
+  const model=sdk.models.realtime("lucy-vton-latest");
+  S.alive=true;
+  try{S.stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:"user",frameRate:model.fps,width:model.width,height:model.height}})}
+  catch(e){const n=e&&e.name;msg(n==="NotFoundError"?"Kamera topilmadi":n==="NotReadableError"?"Kamera band":"Kamera ochilmadi",n==="NotFoundError"?"Ekranga kamera ulanganini tekshiring.":n==="NotReadableError"?"Kamerani boshqa dastur ishlatayapti — uni yoping.":"Brauzerda kameraga ruxsat bering va qayta urinib ko'ring.","Qayta urinish");return}
+  $("#self").srcObject=S.stream;$("#st").innerHTML='<span class="dot"></span> Ulanmoqda…';
+  let tokErr=null;
+  const c=sdk.createDecartClient({apiKeyProvider:async()=>{
+    const r=await fetch(SB_URL+"/functions/v1/aynimo-tryon-token",{method:"POST",
+      headers:{apikey:SB_KEY,"content-type":"application/json"},body:JSON.stringify({product:sel.id})});
+    const j=await r.json().catch(()=>({}));if(!r.ok||!j.apiKey){tokErr=j.error||r.status;throw new Error("token")}
+    S.left=j.maxSeconds||CFG.sec;return j.apiKey}});
+  try{
+    S.client=await c.realtime.connect(S.stream,{model,mirror:"auto",
+      onRemoteStream:s=>{$("#out").srcObject=s;$("#out").classList.add("on")},
+      onConnectionChange:st=>{$("#st").innerHTML=`<span class="dot"></span> ${st==="connected"||st==="generating"?"Jonli":st}`}});
+    if(!S.alive){stop();return}
+    await apply();vars();$("#stop").hidden=false;
+    S.timer=setInterval(()=>{S.left--;
+      $("#timer").textContent=S.left>0?`Sessiya: ${Math.floor(S.left/60)}:${String(S.left%60).padStart(2,"0")}`:"";
+      if(S.left<=0){stop();msg("Sessiya tugadi","Yoqdimi? Kassada ayting — o'lchamini topib beramiz.","Yana kiyib ko'rish")}},1000);
+  }catch(e){console.warn(e);stop();
+    const m={ip_limit:["Biroz kuting","Ketma-ket ko'p marta ishlatildi. Bir ozdan keyin urinib ko'ring."],
+      day_limit:["Bugungi limit tugadi","Ertaga yana ishlaydi."],
+      not_configured:["Kalit kiritilmagan","Supabase'da DECART_API_KEY ni qo'shing."],
+      disabled:["O'chirilgan","Admin panelda yoqing."]}[tokErr]||["Ulanib bo'lmadi","Internet aloqasini tekshiring."];
+    msg(m[0],m[1],tokErr==="day_limit"||tokErr==="not_configured"?null:"Qayta urinish")}
+}
+function stop(){S.alive=false;clearInterval(S.timer);try{S.client&&S.client.disconnect()}catch(e){}S.client=null;
+  if(S.stream)S.stream.getTracks().forEach(t=>t.stop());S.stream=null;
+  $("#out").classList.remove("on");$("#out").srcObject=null;$("#self").srcObject=null;
+  $("#st").textContent="";$("#timer").textContent="";$("#stop").hidden=true;vars()}
+function reset(){stop();hideMsg();attract(true);sel=null;cat="all";draw()}
+/* the screen returns to the welcome state when nobody has touched it for a while */
+function poke(){clearTimeout(idleT);idleT=setTimeout(reset,IDLE_MS)}
+["pointerdown","keydown","touchstart"].forEach(e=>addEventListener(e,poke,{passive:true}));
+$("#go").onclick=()=>{poke();start()};
+$("#stop").onclick=()=>{reset()};
+addEventListener("pagehide",stop);
+load();poke();
+})();
+</script>
+</body>
+</html>
+
+<script>
+window.DECART_CONFIG={WIDGET_SIDE:"left",BUTTON_VISIBILITY:"always",SHOW_TRYON_BUTTONS_WHEN_WIDGET_CLOSED:true};
+(function(){var mine=function(o){var e=o&&o.imgEl;return !!(e&&e.hasAttribute&&e.hasAttribute("data-tryon"))};
+var F={applyPageFixes:function(){},hasCustomFilter:function(){return true},siteName:function(){return "aynimo"},
+canonicalImageUrl:function(u){return u},singleImageOnly:function(){return false},rejects:function(o){return !mine(o)},
+buttonOnFirstGalleryViewOnly:function(){return false},buttonOnEveryGalleryView:function(){return true}};
+window.DecartGarmentFilter=typeof Proxy==="function"?new Proxy(F,{get:function(t,k){return k in t?t[k]:function(){return false}}}):F})();
+</script>
+<script src="https://anywear.decart.ai/widget/latest/anywear.js?domain=sweet-beignet-eea10a.netlify.app" async onerror="window.__awFail=1;document.documentElement.classList.add(&#39;aw-fail&#39;)"></script>

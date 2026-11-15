@@ -1,0 +1,18 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self "https://anywear.decart.ai" "https://decart.ai"), microphone=(), geolocation=()
+  X-Frame-Options: SAMEORIGIN
+
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/vendor/*
+  Cache-Control: public, max-age=604800
+
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/kiosk/*
+  X-Robots-Tag: noindex, nofollow

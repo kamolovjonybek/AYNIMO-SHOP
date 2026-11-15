@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>AYNIMO — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Bodoni+Moda:opsz,wght@6..96,500&display=swap">
+<style>
+:root{--bg:#f3f3f1;--card:#fff;--ink:#16171a;--ink2:#5d6068;--ink3:#9a9da4;--line:#e2e2df;--acc:#16171a;--ok:#2f7d4f;--warn:#b7791f;--bad:#c2463a;--blue:#2c5fa8;
+  --sans:"Jost",system-ui,sans-serif;--display:"Bodoni Moda",Georgia,serif;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px))}
+.top{position:sticky;top:0;z-index:20;background:rgba(243,243,241,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:64px;padding-bottom:0}
+.logo{font-weight:500;letter-spacing:.32em;font-size:15px}.logo small{letter-spacing:.1em;color:var(--ink3);font-size:11px;margin-left:6px}
+nav.tabs{display:flex;gap:4px;flex:1;overflow-x:auto}
+nav.tabs button{height:36px;padding:0 14px;border-radius:18px;color:var(--ink2);white-space:nowrap}
+nav.tabs button.on{background:var(--ink);color:#fff}
+nav.tabs .badge{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#fff;font-size:11px;margin-left:6px}
+.me{font-size:12px;color:var(--ink2);display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:6px;background:var(--ink);color:#fff;font-weight:500;font-size:14px;white-space:nowrap}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.danger{background:var(--bad)}
+.btn.sm{height:32px;padding:0 12px;font-size:13px}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(28px,4vw,40px);line-height:1.1}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin:28px 0 18px}
+.sub{color:var(--ink2);font-size:14px;margin-top:4px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=text],input[type=search],input[type=email],input[type=password],input[type=number],input[type=tel],input[type=date],input[type=datetime-local],select,textarea{height:40px;padding:0 12px;border:1px solid var(--line);border-radius:6px;background:#fff;width:100%;min-width:0}
+textarea{height:auto;min-height:84px;padding:10px 12px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ink);outline-offset:-1px}
+label.f{display:grid;gap:6px;font-size:12px;color:var(--ink2)}
+label.f>span{font-weight:500;color:var(--ink)}
+label.f small{color:var(--ink3)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px}
+.muted{color:var(--ink3)}
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:8px;font-size:14px;z-index:100;transition:transform .35s;max-width:calc(100% - 32px)}
+.toast.on{transform:translate(-50%,0)}.toast.err{background:var(--bad)}
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login .card{width:min(400px,100%);padding:32px;display:grid;gap:14px}
+.login h1{font-size:32px}
+.login .err{color:var(--bad);font-size:13px}
+/* orders */
+.olist{display:grid;gap:12px}
+.order{padding:16px 18px;display:grid;gap:12px}
+.order .row1{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
+.order .no{font-weight:600;font-size:16px}
+.order .meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink2)}
+.order .meta b{color:var(--ink);font-weight:500}
+.order .items{display:grid;gap:8px}
+.order .it{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;font-size:13px}
+.order .it img{width:44px;height:56px;object-fit:cover;border-radius:4px;background:var(--bg)}
+.order .it .q{color:var(--ink2)}
+.order .tot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;font-weight:600}
+.order .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.order .acts select{width:auto}
+.order .note{font-size:13px;background:#faf7ee;border-radius:6px;padding:8px 10px}
+.pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:500}
+.p-unpaid{background:#eee;color:var(--ink3)}.p-checking{background:#fdf3e1;color:var(--warn)}.p-paid{background:#e6f3eb;color:var(--ok)}.p-refunded{background:#fdecea;color:var(--bad)}
+.s-new{background:#fdecea;color:var(--bad)}.s-confirmed{background:#e8f0fb;color:var(--blue)}.s-shipped{background:#fdf3e1;color:var(--warn)}.s-done{background:#e6f3eb;color:var(--ok)}.s-cancelled{background:#eee;color:var(--ink3)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.stat{padding:14px 16px}.stat b{display:block;font-size:22px;font-weight:600}.stat span{font-size:12px;color:var(--ink2)}
+/* products */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.pc{overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:box-shadow .2s}
+.pc:hover{box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.pc .ph{aspect-ratio:3/4;background:var(--bg);position:relative}
+.pc .ph img{width:100%;height:100%;object-fit:cover}
+.pc .ph .tag{position:absolute;left:8px;top:8px}
+.pc .in{padding:10px 12px;display:grid;gap:2px}
+.pc .in b{font-weight:500}
+.pc .in small{color:var(--ink2);font-size:12px}
+.pc.off{opacity:.55}
+.dots{display:flex;gap:4px;margin-top:4px}.dots i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+/* editor */
+.ed{position:fixed;inset:0;z-index:50;display:flex;justify-content:flex-end;background:rgba(20,21,24,.4);opacity:0;pointer-events:none;transition:opacity .25s}
+.ed.on{opacity:1;pointer-events:auto}
+.ed .sheet{width:min(820px,100%);height:100%;background:var(--bg);overflow:auto;transform:translateX(30px);transition:transform .3s;display:flex;flex-direction:column}
+.ed.on .sheet{transform:none}
+.ed .bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;background:var(--bg);border-bottom:1px solid var(--line)}
+.ed .bar h2{font-family:var(--display);font-weight:500;font-size:24px}
+.ed .body{padding:20px;display:grid;gap:18px}
+.ed .body>*,.sec>*,.g2>*,.g3>*{min-width:0}.sec input,.sec select,.sec textarea{max-width:100%;min-width:0}
+.stk td code{white-space:nowrap}
+.sec{padding:18px;display:grid;gap:14px}
+.sec h3{font-size:14px;font-weight:600;letter-spacing:.02em}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 6px 0 12px;border:1px solid var(--line);border-radius:15px;background:#fff;font-size:13px}
+.chip button{width:22px;height:22px;border-radius:50%;color:var(--ink3)}.chip button:hover{background:var(--bg);color:var(--bad)}
+.presets{display:flex;flex-wrap:wrap;gap:6px}.presets button{font-size:12px;height:28px;padding:0 10px;border:1px dashed var(--line);border-radius:14px;color:var(--ink2)}
+.sw{display:flex;align-items:center;gap:10px}
+.var{padding:14px;display:grid;gap:12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.var .vh{display:grid;grid-template-columns:1fr 120px auto;gap:10px;align-items:end}
+.var input[type=color]{width:100%;height:40px;padding:2px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.imgs{display:flex;flex-wrap:wrap;gap:8px}
+.im{position:relative;width:84px;height:112px;border-radius:6px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
+.im img{width:100%;height:100%;object-fit:cover}
+.im .ctl{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;background:rgba(0,0,0,.55)}
+.im .ctl button{color:#fff;width:28px;height:24px;font-size:13px}
+.im .main{position:absolute;left:4px;top:4px;font-size:10px;background:#fff;border-radius:4px;padding:1px 5px}
+.up{width:84px;height:112px;border:1px dashed var(--ink3);border-radius:6px;display:grid;place-items:center;text-align:center;font-size:12px;color:var(--ink2);cursor:pointer;padding:6px}
+.up:hover{border-color:var(--ink);color:var(--ink)}
+.rail{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center}
+.rail .rp{width:120px;height:120px;border-radius:6px;background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0 0/16px 16px;display:grid;place-items:center;overflow:hidden;border:1px solid var(--line)}
+.rail .rp img{max-width:100%;max-height:100%}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px}
+.switch input{appearance:none;width:40px;height:24px;border-radius:12px;background:#cfd0d3;position:relative;transition:background .2s;cursor:pointer;flex:none}
+.switch input::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
+.switch input:checked{background:var(--ok)}.switch input:checked::after{left:19px}
+.hint{font-size:12px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.danger-zone{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--bad)}
+.empty{padding:40px;text-align:center;color:var(--ink2)}
+.spin{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (max-width:720px){
+  .top .wrap{gap:10px;height:auto;flex-wrap:wrap;padding-block:10px}
+  nav.tabs{order:3;flex-basis:100%}
+  .g2,.g3{grid-template-columns:1fr}
+  .var .vh{grid-template-columns:1fr 90px}
+  .var .vh .btn{grid-column:1/-1}
+  .pgrid{grid-template-columns:repeat(2,1fr)}
+  .rail{grid-template-columns:1fr}
+}
+.stk{border-collapse:collapse;font-size:13px;min-width:100%}.stk th,.stk td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}.stk th{font-weight:500;color:var(--ink3);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.stk input[type=number]{width:72px;padding:6px 8px}.stk.cat input[type=text]{min-width:120px;padding:6px 8px}.stk.cat input[type=date]{padding:6px 8px}
+.pc .bad,small.bad{color:#b4472f}
+</style>
+</head>
+<body>
+<div id="app"><div class="login"><span class="spin"></span></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="../vendor/supabase.min.js"></script>
+<script>
+(function(){
+"use strict";
+const SB_URL="https://woxpyneklstqcleipcxt.supabase.co",SB_KEY="sb_publishable_Inf-7Obvi8r-DY-lDaSwJQ_6fPbKOtE";
+const sb=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+const $=(s,r)=>(r||document).querySelector(s),$$=(s,r)=>[...(r||document).querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dt=s=>{const d=new Date(s),z=n=>String(n).padStart(2,"0");return `${z(d.getDate())}.${z(d.getMonth()+1)}.${d.getFullYear()} · ${z(d.getHours())}:${z(d.getMinutes())}`};
+const fmt=n=>(n||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ")+" so'm";
+const src=u=>!u?"":/^(https?:|data:|blob:)/.test(u)?u:"../"+u.replace(/^\/+/,"");
+let CATN={};let cats=[],cols=[],isOwner=false;
+const ERRN={stock_restore:"Bu buyurtmani qayta tiklab bo'lmaydi: mahsulot boshqa mijozga sotilib bo'lgan",last_owner:"Oxirgi egani o'chirib yoki pasaytirib bo'lmaydi",products_category_fk:"Bu bo'limda mahsulotlar bor — avval ularni boshqa bo'limga o'tkazing",products_sale_price_chk:"Chegirma narxi asl narxdan kichik bo'lishi kerak",categories_id_check:"Kod faqat kichik lotin harf, raqam, - va _",collections_id_check:"Kod faqat kichik lotin harf, raqam, - va _",duplicate:"Bu kod band"};
+const STN={new:"Yangi",confirmed:"Tasdiqlandi",shipped:"Yo'lda",done:"Yakunlandi",cancelled:"Bekor qilindi"};
+const PAYN={cash:"Naqd",card_courier:"Kuryerga karta",transfer:"O'tkazma",payme:"Payme",click:"Click",uzum:"Uzum"};
+const PSN={unpaid:"To'lanmagan",checking:"Chek tekshirilmoqda",paid:"To'langan",refunded:"Qaytarilgan"};
+const RSN={pending:"Kutmoqda",published:"Saytda",hidden:"Yashirin"};
+const SIZES={"Kiyim":["M","L","XL","2XL","3XL"],"Kostyum":["46","48","50","52","54","56"],"Shim":["30","31","32","33","34","36"],"Oyoq kiyim":["39","40","41","42","43","44"],"Standart":["Standart"]};
+const PROMPT={outer:"Substitute the current outer layer with a {color} jacket, worn open over the existing top, true-to-life fabric texture and fit",
+  classic:"Substitute the current outer layer with a {color} tailored blazer, worn open over the existing top, true-to-life fabric texture and fit",
+  knit:"Substitute the current top with a {color} knit sweater, regular fit, true-to-life knit texture",
+  shirt:"Substitute the current top with a {color} button-up shirt, regular fit, true-to-life fabric texture",
+  pants:"Substitute the current trousers with {color} trousers, tailored straight fit, true-to-life fabric texture",
+  shoes:"Substitute the current shoes with {color} shoes, clean minimal design",
+  acc:"Add a {color} knitted beanie hat on the head"};
+let tT;const toast=(m,err)=>{const t=$("#toast");t.textContent=m;t.classList.toggle("err",!!err);t.classList.add("on");clearTimeout(tT);tT=setTimeout(()=>t.classList.remove("on"),3200)};
+const fail=(e,what)=>{console.error(what,e);const m=String(e&&e.message||e);const k=Object.keys(ERRN).find(k=>m.includes(k))||(e&&e.code==="23505"?"duplicate":null);toast((what?what+": ":"")+(k?ERRN[k]:m),true)};
+async function loadCats(){const [a,b]=await Promise.all([sb.from("categories").select("*").order("sort").order("id"),sb.from("collections").select("*").order("sort").order("id")]);if(a.error)throw a.error;if(b.error)throw b.error;cats=a.data;cols=b.data;CATN=Object.fromEntries(cats.map(c=>[c.id,c.name]))}
+const catOpts=sel=>cats.map(c=>`<option value="${esc(c.id)}" ${c.id===sel?"selected":""}>${esc(c.name)}${c.active?"":" (yashirin)"}</option>`).join("");
+let me=null,tab="orders",products=[],orders=[],settings={},lastNew=0;
+
+/* ================= auth ================= */
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(location.hash.includes("type=recovery")) return showReset();
+  if(!session) return showLogin();
+  me=session.user;
+  const {data:isA,error}=await sb.rpc("aynimo_is_admin");
+  if(error||!isA) return showLogin(`${esc(me.email)} admin emas. Boshqa hisob bilan kiring.`,true);
+  const ow=await sb.rpc("aynimo_is_owner");isOwner=!ow.error&&!!ow.data;
+  try{await loadCats()}catch(e){fail(e,"Bo'limlar")}
+  shell();
+}
+sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY")showReset()});
+function showLogin(msg,signedIn){
+  $("#app").innerHTML=`<div class="login"><form class="card" id="lf"><div><div class="logo">AYNIMO <small>ADMIN</small></div><h1 style="margin-top:14px">Kirish</h1><p class="sub">Do'kon boshqaruv paneli</p></div>
+   <label class="f"><span>Email</span><input type="email" id="le" autocomplete="username" required></label>
+   <label class="f"><span>Parol</span><input type="password" id="lp" autocomplete="current-password" required></label>
+   <div class="err" id="lerr">${msg||""}</div>
+   <button class="btn" id="lb">Kirish</button>
+   <button type="button" class="btn ghost" id="lr">Parolni unutdim</button>
+   ${signedIn?`<button type="button" class="btn ghost" id="lo">Chiqish</button>`:""}</form></div>`;
+  $("#lf").onsubmit=async e=>{e.preventDefault();$("#lb").disabled=true;$("#lerr").textContent="";
+    const {error}=await sb.auth.signInWithPassword({email:$("#le").value.trim(),password:$("#lp").value});
+    $("#lb").disabled=false;if(error){$("#lerr").textContent=error.message==="Invalid login credentials"?"Email yoki parol noto'g'ri":error.message;return}init()};
+  $("#lr").onclick=async()=>{const em=$("#le").value.trim();if(!em){$("#lerr").textContent="Avval emailni yozing";return}
+    const {error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.href.split("#")[0]});
+    $("#lerr").style.color=error?"":"var(--ok)";$("#lerr").textContent=error?error.message:"Parolni tiklash havolasi emailingizga yuborildi"};
+  if(signedIn)$("#lo").onclick=async()=>{await sb.auth.signOut();showLogin()};
+}
+function showReset(){
+  $("#app").innerHTML=`<div class="login"><form class="card" id="rf"><h1>Yangi parol</h1><label class="f"><span>Yangi parol (kamida 10 belgi)</span><input type="password" id="rp" minlength="10" autocomplete="new-password" required></label><div class="err" id="rerr"></div><button class="btn">Saqlash</button></form></div>`;
+  $("#rf").onsubmit=async e=>{e.preventDefault();const {error}=await sb.auth.updateUser({password:$("#rp").value});if(error){$("#rerr").textContent=error.message;return}history.replaceState(null,"",location.pathname);toast("Parol yangilandi");init()};
+}
+
+/* ================= shell ================= */
+function shell(){
+  $("#app").innerHTML=`<header class="top"><div class="wrap"><div class="logo">AYNIMO <small>ADMIN</small></div>
+    <nav class="tabs"><button data-t="orders">Buyurtmalar<span class="badge" id="nb" hidden></span></button><button data-t="products">Mahsulotlar</button><button data-t="reviews">Izohlar<span class="badge" id="rb" hidden></span></button><button data-t="catalog">Bo'limlar</button><button data-t="settings">Sozlamalar</button>${isOwner?`<button data-t="team">Adminlar</button>`:""}</nav>
+    <div class="me"><span>${esc(me.email)} · ${isOwner?"ega":"menejer"}</span><button class="btn ghost sm" id="out">Chiqish</button></div></div></header>
+    <main class="wrap" id="main"></main><div class="ed" id="ed"><div class="sheet" id="sheet"></div></div>`;
+  $(".tabs").onclick=e=>{const b=e.target.closest("button");if(b)go(b.dataset.t)};
+  $("#out").onclick=async()=>{await sb.auth.signOut();location.reload()};
+  $("#ed").onclick=e=>{if(e.target.id==="ed")closeEd()};
+  addEventListener("keydown",e=>{if(e.key==="Escape")closeEd()});
+  go(location.hash.slice(1)||"orders");
+  setInterval(pollOrders,30000);pendingReviews();
+}
+function go(t){tab=["orders","products","reviews","catalog","settings"].concat(isOwner?["team"]:[]).includes(t)?t:"orders";history.replaceState(null,"","#"+tab);$$(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+  ({orders:viewOrders,products:viewProducts,reviews:viewReviews,catalog:viewCatalog,settings:viewSettings,team:viewTeam})[tab]()}
+
+/* ================= orders ================= */
+let ofilter="active",oq="";
+async function loadOrders(){const {data,error}=await sb.from("orders").select("*").order("created_at",{ascending:false}).limit(300);if(error)throw error;orders=data;
+  const n=orders.filter(o=>o.status==="new").length;const b=$("#nb");if(b){b.hidden=!n;b.textContent=n}
+  if(n>lastNew&&lastNew!==0){toast("Yangi buyurtma keldi!");try{new AudioContext().resume()}catch(e){}}lastNew=n||lastNew;return orders}
+async function pollOrders(){try{await loadOrders();if(tab==="orders")drawOrders()}catch(e){}}
+async function viewOrders(){$("#main").innerHTML=`<div class="head"><div><h1>Buyurtmalar</h1><p class="sub">Saytdan kelgan buyurtmalar. Narxlar serverda qayta hisoblangan.</p></div>
+  <div class="tools"><input type="search" id="oq" placeholder="Raqam, ism yoki telefon" style="width:240px" value="${esc(oq)}"><select id="of" style="width:auto"><option value="active">Faol</option><option value="all">Hammasi</option>${Object.entries(STN).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select><button class="btn ghost" id="orl">Yangilash</button></div></div>
+  <div class="stats" id="ost"></div><div class="olist" id="ol"><div class="empty"><span class="spin"></span></div></div>`;
+  $("#of").value=ofilter;$("#of").onchange=e=>{ofilter=e.target.value;drawOrders()};$("#oq").oninput=e=>{oq=e.target.value;drawOrders()};$("#orl").onclick=()=>viewOrders();
+  try{await loadOrders();drawOrders()}catch(e){fail(e,"Buyurtmalar");$("#ol").innerHTML=`<div class="empty">Yuklab bo'lmadi</div>`}}
+function drawOrders(){if(!$("#ol"))return;
+  const today=new Date();today.setHours(0,0,0,0);
+  const td=orders.filter(o=>new Date(o.created_at)>=today&&o.status!=="cancelled");
+  $("#ost").innerHTML=[[orders.filter(o=>o.status==="new").length,"Yangi (javob kutmoqda)"],[td.length,"Bugungi buyurtmalar"],[fmt(td.reduce((a,o)=>a+o.total,0)),"Bugungi summa"],[fmt(orders.filter(o=>o.status==="done").reduce((a,o)=>a+o.total,0)),"Yakunlangan (jami)"]].map(([b,s])=>`<div class="card stat"><b>${b}</b><span>${s}</span></div>`).join("");
+  const q=oq.trim().toLowerCase().replace(/\s/g,"");
+  const list=orders.filter(o=>(ofilter==="all"||(ofilter==="active"?["new","confirmed","shipped"].includes(o.status):o.status===ofilter))&&(!q||(o.number+o.customer_name+o.phone).toLowerCase().replace(/\s/g,"").includes(q)));
+  $("#ol").innerHTML=list.length?list.map(o=>`<article class="card order" data-id="${o.id}">
+    <div class="row1"><div><div class="no">${esc(o.number)}</div><div class="muted" style="font-size:12px">${dt(o.created_at)}</div></div><span class="pill s-${o.status}">${STN[o.status]}</span></div>
+    <div class="meta"><span>👤 <b>${esc(o.customer_name)}</b></span><span>📞 <a href="tel:${esc(o.phone)}"><b>${esc(o.phone)}</b></a></span><span>${o.delivery==="pick"?"🏬 Do'kondan: <b>"+esc(o.branch||"—")+"</b>":"🚚 Yetkazish: <b>"+esc(o.address||"—")+"</b>"}</span></div>
+    <div class="meta"><span>💳 <b>${PAYN[o.payment_method]||"Naqd"}</b></span><span class="pill p-${o.payment_status||"unpaid"}">${PSN[o.payment_status]||"To'lanmagan"}</span>
+      ${o.receipt_url?`<a href="${esc(o.receipt_url)}" target="_blank" rel="noopener">🧾 Chekni ko'rish</a>`:""}</div>
+    ${o.note?`<div class="note">💬 ${esc(o.note)}</div>`:""}
+    <div class="items">${(o.items||[]).map(i=>`<div class="it"><img src="${esc(src(i.img))}" alt="" loading="lazy"><div><b>${esc(i.name)}</b> <span class="muted">${esc(i.sku||"")}</span><div class="q">${esc(i.color)} · ${esc(i.size)} · ${i.q} × ${fmt(i.price)}</div></div><b>${fmt(i.sum)}</b></div>`).join("")}</div>
+    ${o.discount>0?`<div class="tot" style="font-weight:400;font-size:13px"><span class="muted">Chegirma</span><span class="muted">− ${fmt(o.discount)}</span></div>`:""}<div class="tot"><span>Jami</span><span>${fmt(o.total)}</span></div>${o.stock_reserved?`<div class="muted" style="font-size:12px">Ombordan ayirilgan. "Bekor qilindi" qilsangiz qaytadi.</div>`:""}
+    <div class="acts"><select data-st>${Object.entries(STN).map(([k,v])=>`<option value="${k}" ${k===o.status?"selected":""}>${v}</option>`).join("")}</select>
+      <select data-ps>${Object.entries(PSN).map(([k,v])=>`<option value="${k}" ${k===(o.payment_status||"unpaid")?"selected":""}>${v}</option>`).join("")}</select>
+      <input type="text" data-an placeholder="Ichki izoh (mijoz ko'rmaydi)" value="${esc(o.admin_note||"")}" style="flex:1;min-width:180px"><button class="btn sm" data-save>Saqlash</button>
+      <a class="btn ghost sm" href="https://t.me/+${esc(o.phone.replace(/\D/g,""))}" target="_blank" rel="noopener">Telegram</a></div></article>`).join(""):`<div class="card empty">Bu bo'limda buyurtma yo'q</div>`;
+  $$("#ol [data-save]").forEach(b=>b.onclick=async()=>{const c=b.closest(".order"),id=+c.dataset.id;b.disabled=true;
+    const ps=$("[data-ps]",c).value,prev=orders.find(x=>x.id===id);
+    const patch={status:$("[data-st]",c).value,admin_note:$("[data-an]",c).value.trim()||null,payment_status:ps};
+    if(ps==="paid"&&prev.payment_status!=="paid")patch.paid_at=new Date().toISOString();
+    const {error}=await sb.from("orders").update(patch).eq("id",id);b.disabled=false;
+    if(error)return fail(error,"Saqlanmadi");toast("Saqlandi");loadOrders().then(drawOrders)})}
+
+/* ================= products ================= */
+let pcat="all",pq="";
+async function loadProducts(){const {data,error}=await sb.from("products").select("*,variants(*,inventory(*)),product_collections(collection_id)").order("sort").order("id").order("sort",{referencedTable:"variants"});if(error)throw error;products=data;return data}
+async function viewProducts(){$("#main").innerHTML=`<div class="head"><div><h1>Mahsulotlar</h1><p class="sub" id="pcount"></p></div>
+  <div class="tools"><input type="search" id="pq" placeholder="Nomi yoki artikul" style="width:220px" value="${esc(pq)}"><select id="pc" style="width:auto"><option value="all">Barcha bo'limlar</option>${catOpts()}<option value="lowstock">⚠ Kam qolganlar</option></select><button class="btn" id="padd">+ Yangi mahsulot</button></div></div>
+  <div class="pgrid" id="pg"><div class="empty"><span class="spin"></span></div></div>`;
+  $("#pc").value=pcat;$("#pc").onchange=e=>{pcat=e.target.value;drawProducts()};$("#pq").oninput=e=>{pq=e.target.value;drawProducts()};$("#padd").onclick=()=>openEd(null);
+  try{await loadProducts();drawProducts()}catch(e){fail(e,"Mahsulotlar")}}
+function drawProducts(){const q=pq.trim().toLowerCase();const list=products.filter(p=>(pcat==="all"||(pcat==="lowstock"?(p.track_stock&&stockOf(p)<=3):p.category===pcat))&&(!q||(p.name+" "+(p.sku||"")+" "+p.id).toLowerCase().includes(q)));
+  $("#pcount").textContent=`${products.length} ta mahsulot · ${products.filter(p=>p.active).length} tasi saytda ko'rinadi`;
+  $("#pg").innerHTML=list.length?list.map(p=>{const v=p.variants[0];return `<div class="card pc ${p.active?"":"off"}" data-id="${esc(p.id)}"><div class="ph">${v&&v.images[0]?`<img src="${esc(src(v.images[0]))}" alt="" loading="lazy">`:""}<span class="tag">${!p.active?`<span class="pill s-cancelled">Yashirin</span>`:p.badge==="new"?`<span class="pill s-confirmed">Yangi</span>`:p.badge==="sale"?`<span class="pill s-new">Aksiya</span>`:""}</span></div>
+    <div class="in"><b>${esc(p.name)}</b><small>${esc(CATN[p.category]||p.category)} · ${esc(p.sku||p.id)}</small><span>${saleOn(p)?`<s class="muted">${fmt(p.price)}</s> <b style="color:var(--bad,#b4472f)">${fmt(p.sale_price)}</b>`:fmt(p.price)}</span>${p.track_stock?`<small class="${stockOf(p)?"":"bad"}">${stockOf(p)?"Omborda: "+stockOf(p)+" dona":"Tugagan"}</small>`:""}<div class="dots">${p.variants.map(v=>`<i style="background:${esc(v.hex)}" title="${esc(v.color)}"></i>`).join("")}</div></div></div>`}).join(""):`<div class="card empty" style="grid-column:1/-1">Hech narsa topilmadi</div>`;
+  $$("#pg .pc").forEach(c=>c.onclick=()=>openEd(products.find(p=>p.id===c.dataset.id)))}
+
+const saleOn=p=>p.sale_price!=null&&p.sale_price<p.price&&(!p.sale_ends_at||new Date(p.sale_ends_at)>new Date());
+const stockOf=p=>p.variants.reduce((a,v)=>a+(v.inventory||[]).filter(r=>!p.sizes.length||p.sizes.includes(r.size)).reduce((b,r)=>b+r.qty,0),0);
+const isoLocal=s=>{if(!s)return"";const d=new Date(s),z=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`};
+/* ---------- editor ---------- */
+let E=null;
+const blankVar=()=>({id:null,color:"",hex:"#888888",images:[],rail_image:null,rail_w:null,rail_h:null,rail_hx:.5});
+function openEd(p){E=p?JSON.parse(JSON.stringify(p)):{id:"",name:"",type:"",category:(cats[0]||{}).id||"",price:0,sale_price:null,sale_ends_at:null,track_stock:false,product_collections:[],sku:"",availability:"Barcha filiallarda",description:"",sizes:[...((cats[0]||{}).size_preset||[])],badge:null,active:true,sort:(products.reduce((m,x)=>Math.max(m,x.sort),0)+10),tryon:(cats[0]||{}).tryon_default!==false,tryon_prompt:PROMPT[(cats[0]||{}).id]||"",variants:[blankVar()]};
+  E._new=!p;E._removed=[];drawEd();$("#ed").classList.add("on");document.body.style.overflow="hidden"}
+function closeEd(){if(!$("#ed")||!$("#ed").classList.contains("on"))return;$("#ed").classList.remove("on");document.body.style.overflow="";E=null}
+function drawEd(){const p=E;
+  $("#sheet").innerHTML=`<div class="bar"><h2>${p._new?"Yangi mahsulot":esc(p.name)}</h2><div class="tools"><button class="btn ghost" id="ec">Bekor qilish</button><button class="btn" id="es">Saqlash</button></div></div>
+  <div class="body">
+   <section class="card sec"><h3>Asosiy ma'lumot</h3>
+    <div class="g2"><label class="f"><span>Nomi</span><input type="text" id="fn" value="${esc(p.name)}" maxlength="120" placeholder="Masalan: Zamokli vetrovka"></label>
+     <label class="f"><span>Kod (ID)</span><input type="text" id="fid" value="${esc(p.id)}" ${p._new?"":"readonly"} placeholder="Masalan: 13204" pattern="[A-Za-z0-9_\\-]{1,40}"><small>${p._new?"Lotin harf va raqamlar. Keyin o'zgartirib bo'lmaydi":"O'zgartirib bo'lmaydi"}</small></label></div>
+    <div class="g3"><label class="f"><span>Bo'lim</span><select id="fc">${catOpts(p.category)}</select></label>
+     <label class="f"><span>Turi</span><input type="text" id="ft" value="${esc(p.type)}" placeholder="Vetrovka, Pidjak, Lofer…"></label>
+     <label class="f"><span>Narxi (so'm)</span><input type="number" id="fp" value="${p.price}" min="0" step="100" inputmode="numeric"></label></div>
+    <div class="g3"><label class="f"><span>Artikul</span><input type="text" id="fsku" value="${esc(p.sku||"")}"></label>
+     <label class="f"><span>Qayerda bor</span><input type="text" id="fav" value="${esc(p.availability)}"></label>
+     <label class="f"><span>Belgi</span><select id="fb"><option value="">Yo'q</option><option value="new" ${p.badge==="new"?"selected":""}>Yangi</option><option value="sale" ${p.badge==="sale"?"selected":""}>Aksiya</option></select></label></div>
+    <label class="f"><span>Tavsif</span><textarea id="fd" maxlength="800">${esc(p.description)}</textarea></label>
+    <div class="g2"><label class="switch"><input type="checkbox" id="fa" ${p.active?"checked":""}> Saytda ko'rsatish</label><label class="f"><span>Tartib raqami</span><input type="number" id="fso" value="${p.sort}" step="10"><small>Kichik raqam katalogda oldinroq turadi</small></label></div>
+   </section>
+   <section class="card sec"><h3>O'lchamlar</h3>
+    <div class="chips" id="szs"></div>
+    <div class="tools"><input type="text" id="szi" placeholder="O'lcham qo'shish (masalan XL) va Enter" style="max-width:280px"><div class="presets">${cats.filter(c=>c.size_preset.length).map(c=>`<button type="button" data-pc="${esc(c.id)}">${esc(c.name)}</button>`).join("")||Object.keys(SIZES).map(k=>`<button type="button" data-ps="${k}">${k}</button>`).join("")}</div></div>
+   </section>
+   <section class="card sec"><h3>Chegirma</h3>
+    <div class="g3"><label class="f"><span>Chegirma narxi (so'm)</span><input type="number" id="fsp" value="${p.sale_price??""}" min="0" step="100" inputmode="numeric" placeholder="Bo'sh — chegirma yo'q"><small id="fspp"></small></label>
+     <label class="f"><span>Qachongacha</span><input type="datetime-local" id="fse" value="${isoLocal(p.sale_ends_at)}"><small>Bo'sh qolsa — o'zingiz olib tashlaguncha</small></label>
+     <div class="f"><span>&nbsp;</span><button type="button" class="btn ghost sm" id="fsx">Chegirmani olib tashlash</button></div></div>
+    <div class="hint">Saytda eski narx chizilib, yangisi ko'rsatiladi. Buyurtma summasi serverda shu narx bilan hisoblanadi — muddat tugasa avtomatik asl narxga qaytadi.</div>
+   </section>
+   <section class="card sec"><h3>Ombor</h3>
+    <label class="switch"><input type="checkbox" id="fts" ${p.track_stock?"checked":""}> Qoldiqni hisoblash (har rang va o'lcham bo'yicha)</label>
+    <div id="stock"></div>
+   </section>
+   ${cols.length?`<section class="card sec"><h3>Kolleksiyalar</h3><div class="g2">${cols.map(c=>`<label class="switch"><input type="checkbox" data-col="${esc(c.id)}" ${(p.product_collections||[]).some(x=>x.collection_id===c.id)?"checked":""}> ${esc(c.name)}</label>`).join("")}</div></section>`:""}
+   <section class="card sec"><h3>Ranglar va rasmlar</h3>
+    <div class="hint">Har bir rang uchun kamida bitta rasm kerak. Birinchi rasm asosiy bo'ladi. Rasmlar avtomatik siqiladi (WebP, 1400px). Ilgakda osilgan, oq-kulrang fonli rasmlar eng chiroyli chiqadi va "kiyib ko'rish" uchun ham eng yaxshisi.</div>
+    <div id="vars" style="display:grid;gap:12px"></div>
+    <button type="button" class="btn ghost" id="vadd">+ Rang qo'shish</button>
+   </section>
+   <section class="card sec"><h3>AI: kamerada kiyib ko'rish</h3>
+    <label class="switch"><input type="checkbox" id="ftr" ${p.tryon?"checked":""}> Bu mahsulot uchun "Kiyib ko'rish" tugmasini ko'rsatish</label>
+    <label class="f"><span>Kiyim tavsifi (inglizcha)</span><textarea id="ftp" maxlength="400">${esc(p.tryon_prompt||"")}</textarea><small>{color} o'rniga rang avtomatik qo'yiladi. 20–30 so'z: kiyim turi, mato, bichim. "Substitute the current top/outer layer/trousers/shoes with…" bilan boshlang.</small></label>
+    <div><button type="button" class="btn ghost sm" id="ftpg">Bo'limga qarab namuna qo'yish</button></div>
+   </section>
+   ${p._new?"":`<section class="card sec danger-zone"><div><h3>Mahsulotni o'chirish</h3><p class="sub">Butunlay o'chadi. Vaqtincha yashirish uchun "Saytda ko'rsatish"ni o'chiring.</p></div><div id="delz"><button type="button" class="btn danger" id="pdel">O'chirish</button></div></section>`}
+  </div>`;
+  drawSizes();drawVars();
+  $("#ec").onclick=closeEd;$("#es").onclick=saveEd;
+  $("#fc").onchange=e=>{const c=e.target.value,cc=cats.find(x=>x.id===c);if(cc&&E._new){if(cc.size_preset.length){E.sizes=[...cc.size_preset];drawSizes()}$("#ftr").checked=cc.tryon_default}if(PROMPT[c]&&(!$("#ftp").value.trim()||Object.values(PROMPT).includes($("#ftp").value.trim())))$("#ftp").value=PROMPT[c]};
+  $("#ftpg").onclick=()=>{$("#ftp").value=PROMPT[$("#fc").value]||PROMPT.outer};
+  $("#szi").onkeydown=e=>{if(e.key!=="Enter")return;e.preventDefault();const v=e.target.value.trim();if(v&&!E.sizes.includes(v)){E.sizes.push(v);drawSizes()}e.target.value=""};
+  $$("[data-ps]").forEach(b=>b.onclick=()=>{E.sizes=[...SIZES[b.dataset.ps]];drawSizes()});
+  $$("[data-pc]").forEach(b=>b.onclick=()=>{E.sizes=[...(cats.find(c=>c.id===b.dataset.pc)||{size_preset:[]}).size_preset];drawSizes()});
+  $("#fts").onchange=e=>{syncStock();E.track_stock=e.target.checked;drawStock()};
+  $("#fsp").oninput=salePct;salePct();
+  $("#vadd").onclick=()=>{E.variants.push(blankVar());drawVars()};
+  if($("#pdel"))$("#pdel").onclick=()=>{$("#delz").innerHTML=`<div class="confirm">Rostdan o'chirilsinmi? Qaytarib bo'lmaydi. <button class="btn danger sm" id="pdel2">Ha, o'chirish</button><button class="btn ghost sm" id="pdel0">Yo'q</button></div>`;
+    $("#pdel0").onclick=drawEd;$("#pdel2").onclick=async()=>{const {error}=await sb.from("products").delete().eq("id",E.id);if(error)return fail(error,"O'chmadi");toast("O'chirildi");closeEd();viewProducts()}}}
+function salePct(){const pr=parseInt($("#fp").value,10)||0,sp=parseInt($("#fsp").value,10);const el=$("#fspp");if(!el)return;
+  el.textContent=isNaN(sp)?"":sp>=pr?"Asl narxdan kichik bo'lishi kerak":"−"+Math.round((1-sp/pr)*100)+"%";el.style.color=!isNaN(sp)&&sp>=pr?"var(--bad,#b4472f)":"";
+  if($("#fsx"))$("#fsx").onclick=()=>{$("#fsp").value="";$("#fse").value="";salePct()}}
+function syncStock(){$$("#stock [data-q]").forEach(i=>{const v=E.variants[+i.dataset.v];if(!v)return;v._stock=v._stock||{};v._stock[i.dataset.s]=Math.max(0,parseInt(i.value,10)||0)})}
+function drawStock(){const el=$("#stock");if(!el)return;if(!E.track_stock){el.innerHTML=`<p class="sub">O'chiq: mahsulot doim "bor" deb ko'rsatiladi. Yoqsangiz, har rang/o'lcham uchun nechta borligini yozasiz — buyurtma kelganda avtomatik kamayadi, tugasa saytda "tugagan" bo'ladi.</p>`;return}
+  const sz=E.sizes.length?E.sizes:["Standart"];
+  E.variants.forEach(v=>{if(!v._stock){v._stock={};(v.inventory||[]).forEach(r=>v._stock[r.size]=r.qty)}});
+  el.innerHTML=`<div style="overflow-x:auto"><table class="stk"><thead><tr><th>Rang</th>${sz.map(s=>`<th>${esc(s)}</th>`).join("")}<th>Jami</th></tr></thead><tbody>${E.variants.map((v,i)=>`<tr><td>${esc(v.color||(i+1)+"-rang")}</td>${sz.map(s=>`<td><input type="number" min="0" max="99999" inputmode="numeric" data-q data-v="${i}" data-s="${esc(s)}" value="${v._stock[s]??0}"></td>`).join("")}<td><b>${sz.reduce((a,s)=>a+(v._stock[s]||0),0)}</b></td></tr>`).join("")}</tbody></table></div>
+   <small class="muted">Buyurtma bekor qilinsa yoki o'chirilsa, soni avtomatik qaytadi.</small>`;
+  $$("#stock [data-q]").forEach(i=>i.onchange=()=>{syncStock();drawStock()})}
+function drawSizes(){$("#szs").innerHTML=E.sizes.length?E.sizes.map((s,i)=>`<span class="chip">${esc(s)}<button type="button" data-i="${i}" aria-label="Olib tashlash">×</button></span>`).join(""):`<span class="muted">O'lcham yo'q — "Standart" deb ko'rsatiladi</span>`;
+  $$("#szs button").forEach(b=>b.onclick=()=>{E.sizes.splice(+b.dataset.i,1);drawSizes()});syncStock();drawStock()}
+function syncVarFields(){$$("#vars .var").forEach((el,i)=>{const v=E.variants[i];if(!v)return;v.color=$("[data-vc]",el).value.trim();v.hex=$("[data-vh]",el).value})}
+function drawVars(){syncStock();
+  $("#vars").innerHTML=E.variants.map((v,i)=>`<div class="var" data-i="${i}">
+    <div class="vh"><label class="f"><span>Rang nomi</span><input type="text" data-vc value="${esc(v.color)}" placeholder="Masalan: To'q ko'k"></label><label class="f"><span>Rang</span><input type="color" data-vh value="${esc(v.hex)}"></label>
+      <button type="button" class="btn ghost sm" data-vdel ${E.variants.length<2?"disabled":""}>Rangni o'chirish</button></div>
+    <div class="imgs">${v.images.map((u,k)=>`<div class="im">${k===0?`<span class="main">Asosiy</span>`:""}<img src="${esc(src(u))}" alt=""><div class="ctl"><button type="button" data-l="${k}" aria-label="Chapga">‹</button><button type="button" data-rm="${k}" aria-label="O'chirish">✕</button><button type="button" data-r="${k}" aria-label="O'ngga">›</button></div></div>`).join("")}
+      <label class="up">+ Rasm<br><small>bir nechta tanlash mumkin</small><input type="file" accept="image/*" multiple hidden data-up></label></div>
+    <div class="rail"><div class="rp">${v.rail_image?`<img src="${esc(src(v.rail_image))}" alt="">`:`<small class="muted" style="padding:8px;text-align:center">Rayl rasmi yo'q</small>`}</div>
+      <div style="display:grid;gap:8px"><div><b style="font-size:13px">Bosh sahifa rayli uchun (ixtiyoriy)</b><p class="sub" style="font-size:12px">Fonsiz (shaffof) PNG — ilgakdagi kiyim. Shunday rasm bo'lsa, kiyim bosh sahifadagi metall raylda osilib turadi.</p></div>
+        <div class="tools"><label class="btn ghost sm">Rasm yuklash<input type="file" accept="image/png,image/webp" hidden data-rail></label>${v.rail_image?`<button type="button" class="btn ghost sm" data-rail-rm>Olib tashlash</button>`:""}</div></div></div>
+  </div>`).join("");
+  $$("#vars .var").forEach(el=>{const i=+el.dataset.i,v=E.variants[i];
+    $("[data-vdel]",el).onclick=()=>{syncVarFields();const [r]=E.variants.splice(i,1);if(r.id)E._removed.push(r.id);drawVars()};
+    $$("[data-rm]",el).forEach(b=>b.onclick=()=>{syncVarFields();v.images.splice(+b.dataset.rm,1);drawVars()});
+    $$("[data-l]",el).forEach(b=>b.onclick=()=>{syncVarFields();const k=+b.dataset.l;if(k>0){[v.images[k-1],v.images[k]]=[v.images[k],v.images[k-1]];drawVars()}});
+    $$("[data-r]",el).forEach(b=>b.onclick=()=>{syncVarFields();const k=+b.dataset.r;if(k<v.images.length-1){[v.images[k+1],v.images[k]]=[v.images[k],v.images[k+1]];drawVars()}});
+    $("[data-up]",el).onchange=async e=>{syncVarFields();const files=[...e.target.files];if(!files.length)return;const lab=e.target.closest(".up");lab.innerHTML=`<span class="spin"></span>`;
+      try{for(const f of files){const u=await upload(f,1400,false);v.images.push(u.url)}}catch(err){fail(err,"Rasm yuklanmadi")}drawVars()};
+    $("[data-rail]",el).onchange=async e=>{syncVarFields();const f=e.target.files[0];if(!f)return;try{const u=await upload(f,900,true);v.rail_image=u.url;v.rail_w=u.w;v.rail_h=u.h;v.rail_hx=u.hx}catch(err){fail(err,"Rasm yuklanmadi")}drawVars()};
+    const rr=$("[data-rail-rm]",el);if(rr)rr.onclick=()=>{syncVarFields();v.rail_image=null;v.rail_w=null;v.rail_h=null;drawVars()};
+    $("[data-vc]",el).onchange=()=>{syncVarFields();drawStock()};
+  });drawStock()}
+/* resize + convert to WebP in the browser, then upload to Supabase Storage */
+async function upload(file,max,trim){
+  const bmp=await createImageBitmap(file);let sx=0,sy=0,sw=bmp.width,sh=bmp.height,hx=.5;
+  if(trim){const c0=new OffscreenCanvas(bmp.width,bmp.height),x0=c0.getContext("2d");x0.drawImage(bmp,0,0);const d=x0.getImageData(0,0,bmp.width,bmp.height).data;
+    let minX=bmp.width,minY=bmp.height,maxX=-1,maxY=-1;for(let y=0;y<bmp.height;y+=2)for(let x=0;x<bmp.width;x+=2){if(d[(y*bmp.width+x)*4+3]>24){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y}}
+    if(maxX<0)throw new Error("Rasm shaffof emas yoki bo'sh");if(minX===0&&minY===0&&maxX>=bmp.width-2&&maxY>=bmp.height-2)throw new Error("Rasm foni shaffof emas — fonsiz PNG yuklang");
+    sx=minX;sy=minY;sw=maxX-minX+1;sh=maxY-minY+1;
+    let tx=0,tn=0;const band=Math.max(2,Math.round(sh*.03));for(let y=sy;y<sy+band;y++)for(let x=sx;x<sx+sw;x++)if(d[(y*bmp.width+x)*4+3]>128){tx+=x;tn++}
+    if(tn)hx=Math.round(((tx/tn-sx)/sw)*1000)/1000}
+  const k=Math.min(1,max/Math.max(sw,sh)),w=Math.round(sw*k),h=Math.round(sh*k);
+  const c=new OffscreenCanvas(w,h);const x=c.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(bmp,sx,sy,sw,sh,0,0,w,h);
+  const blob=await c.convertToBlob({type:"image/webp",quality:.86});
+  const pid=(($("#fid")&&$("#fid").value.trim())||"misc").replace(/[^A-Za-z0-9_-]/g,"");
+  const path=`${pid}/${crypto.randomUUID()}.webp`;
+  const {error}=await sb.storage.from("products").upload(path,blob,{contentType:"image/webp",cacheControl:"31536000",upsert:false});if(error)throw error;
+  return {url:sb.storage.from("products").getPublicUrl(path).data.publicUrl,w,h,hx}}
+async function saveEd(){syncVarFields();const p=E;
+  const row={id:$("#fid").value.trim(),name:$("#fn").value.trim(),type:$("#ft").value.trim(),category:$("#fc").value,price:Math.max(0,parseInt($("#fp").value,10)||0),
+    sku:$("#fsku").value.trim()||null,availability:$("#fav").value.trim()||"Barcha filiallarda",description:$("#fd").value.trim(),sizes:p.sizes,badge:$("#fb").value||null,
+    active:$("#fa").checked,sort:parseInt($("#fso").value,10)||0,tryon:$("#ftr").checked,tryon_prompt:$("#ftp").value.trim()||null,
+    sale_price:$("#fsp").value.trim()===""?null:Math.max(0,parseInt($("#fsp").value,10)||0),sale_ends_at:$("#fse").value?new Date($("#fse").value).toISOString():null,track_stock:$("#fts").checked};
+  syncStock();
+  const errs=[];if(!/^[A-Za-z0-9_-]{1,40}$/.test(row.id))errs.push("Kod (ID) faqat lotin harf, raqam, - va _ dan iborat bo'lsin");if(!row.name)errs.push("Nomini yozing");if(!row.price)errs.push("Narxini yozing");if(!row.category)errs.push("Bo'limni tanlang");
+  if(row.sale_price!=null&&row.sale_price>=row.price)errs.push("Chegirma narxi asl narxdan kichik bo'lsin");
+  if(row.sale_ends_at&&new Date(row.sale_ends_at)<new Date())errs.push("Chegirma muddati o'tib ketgan sana — to'g'rilang yoki bo'sh qoldiring");
+  if(p._new&&products.some(x=>x.id===row.id))errs.push("Bu kod band");
+  p.variants.forEach((v,i)=>{if(!v.color)errs.push(`${i+1}-rang nomini yozing`);if(!v.images.length)errs.push(`${v.color||i+1+"-rang"} uchun rasm yuklang`)});
+  if(new Set(p.variants.map(v=>v.color.toLowerCase())).size!==p.variants.length)errs.push("Rang nomlari takrorlanmasin");
+  if(row.tryon&&!row.tryon_prompt)errs.push("Kiyib ko'rish uchun kiyim tavsifini yozing yoki tugmani o'chiring");
+  if(errs.length)return toast(errs[0],true);
+  const b=$("#es");b.disabled=true;b.innerHTML=`<span class="spin"></span>`;
+  try{
+    let r=p._new?await sb.from("products").insert(row):await sb.from("products").update(row).eq("id",p.id);if(r.error)throw r.error;
+    if(p._removed.length){r=await sb.from("variants").delete().in("id",p._removed);if(r.error)throw r.error}
+    for(const [i,v] of p.variants.entries()){const vr={product_id:row.id,color:v.color,hex:v.hex,images:v.images,rail_image:v.rail_image,rail_w:v.rail_w,rail_h:v.rail_h,rail_hx:v.rail_hx??.5,sort:i};
+      r=v.id?await sb.from("variants").update(vr).eq("id",v.id):await sb.from("variants").insert(vr).select("id").single();if(r.error)throw r.error;if(!v.id)v.id=r.data.id}
+    if(row.track_stock){const sz=row.sizes.length?row.sizes:["Standart"];
+      // send only cells the admin actually changed, so a sale that landed while the editor was open is not overwritten
+      const inv=p.variants.flatMap(v=>{const o=Object.fromEntries((v.inventory||[]).map(r=>[r.size,r.qty]));return sz.filter(s=>{const n=(v._stock||{})[s]||0;return o[s]===undefined?n>0:o[s]!==n}).map(s=>({variant_id:v.id,size:s,qty:(v._stock||{})[s]||0,updated_at:new Date().toISOString()}))});
+      if(inv.length){r=await sb.from("inventory").upsert(inv,{onConflict:"variant_id,size"});if(r.error)throw r.error}}
+    const want=$$("[data-col]").filter(c=>c.checked).map(c=>c.dataset.col),had=(p.product_collections||[]).map(x=>x.collection_id);
+    const add=want.filter(c=>!had.includes(c)),drop=had.filter(c=>!want.includes(c));
+    if(add.length){r=await sb.from("product_collections").insert(add.map(c=>({product_id:row.id,collection_id:c})));if(r.error)throw r.error}
+    if(drop.length){r=await sb.from("product_collections").delete().eq("product_id",row.id).in("collection_id",drop);if(r.error)throw r.error}
+    toast("Saqlandi. Saytda darhol ko'rinadi");closeEd();await loadProducts();drawProducts()
+  }catch(e){fail(e,"Saqlanmadi");b.disabled=false;b.textContent="Saqlash"}}
+
+/* ================= reviews ================= */
+let reviews=[],rfilter="pending";
+async function pendingReviews(){const {count}=await sb.from("reviews").select("id",{count:"exact",head:true}).eq("status","pending");
+  const b=$("#rb");if(b){b.hidden=!count;b.textContent=count||""}}
+async function viewReviews(){$("#main").innerHTML=`<div class="head"><div><h1>Izohlar</h1><p class="sub">Mijozlar yuborgan baho va rasmlar. Siz tasdiqlamaguningizcha saytda ko'rinmaydi.</p></div>
+  <div class="tools"><select id="rf" style="width:auto"><option value="pending">Kutmoqda</option><option value="published">Saytda</option><option value="hidden">Yashirin</option><option value="all">Hammasi</option></select><button class="btn ghost" id="rrl">Yangilash</button></div></div>
+  <div class="olist" id="rl"><div class="empty"><span class="spin"></span></div></div>`;
+  $("#rf").value=rfilter;$("#rf").onchange=e=>{rfilter=e.target.value;loadReviews()};$("#rrl").onclick=loadReviews;
+  loadReviews()}
+async function loadReviews(){
+  let q=sb.from("reviews").select("*").order("created_at",{ascending:false}).limit(200);
+  if(rfilter!=="all")q=q.eq("status",rfilter);
+  const {data,error}=await q;if(error)return fail(error,"Izohlar");reviews=data;drawReviews();pendingReviews()}
+function drawReviews(){const el=$("#rl");if(!el)return;
+  el.innerHTML=reviews.length?reviews.map(r=>`<article class="card order" data-id="${r.id}">
+    <div class="row1"><div><div class="no">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)} <span style="font-size:14px">${esc(r.author)}</span></div>
+      <div class="muted" style="font-size:12px">${dt(r.created_at)}${r.order_number?` · buyurtma ${esc(r.order_number)} ✓`:" · xarid tasdiqlanmagan"}${r.phone?` · ${esc(r.phone)}`:""}</div></div>
+      <span class="pill ${r.status==="published"?"s-done":r.status==="hidden"?"s-cancelled":"s-new"}">${RSN[r.status]}</span></div>
+    ${r.product_id?`<div class="meta"><span>Mahsulot: <b>${esc((products.find(p=>p.id===r.product_id)||{}).name||r.product_id)}</b></span></div>`:""}
+    ${r.body?`<div class="note" style="background:#f6f6f4">${esc(r.body)}</div>`:""}
+    ${(r.photos||[]).length?`<div class="imgs">${r.photos.map(u=>`<a class="im" href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt=""></a>`).join("")}</div>`:""}
+    <div class="acts"><input type="text" data-rp placeholder="Do'kon javobi (saytda chiqadi)" value="${esc(r.reply||"")}" style="flex:1;min-width:180px">
+      ${r.status!=="published"?`<button class="btn sm" data-pub>Saytga chiqarish</button>`:`<button class="btn ghost sm" data-hide>Yashirish</button>`}
+      <button class="btn ghost sm" data-save2>Javobni saqlash</button><button class="btn ghost sm" data-del>O'chirish</button></div></article>`).join("")
+    :`<div class="card empty">Bu bo'limda izoh yo'q</div>`;
+  const upd=async(id,patch,c)=>{const {error}=await sb.from("reviews").update(patch).eq("id",id);
+    if(error)return fail(error,"Saqlanmadi");toast("Saqlandi");loadReviews()};
+  $$("#rl [data-pub]").forEach(b=>b.onclick=()=>{const c=b.closest(".order");upd(+c.dataset.id,{status:"published",reply:$("[data-rp]",c).value.trim()||null})});
+  $$("#rl [data-hide]").forEach(b=>b.onclick=()=>upd(+b.closest(".order").dataset.id,{status:"hidden"}));
+  $$("#rl [data-save2]").forEach(b=>b.onclick=()=>{const c=b.closest(".order");upd(+c.dataset.id,{reply:$("[data-rp]",c).value.trim()||null})});
+  $$("#rl [data-del]").forEach(b=>b.onclick=async()=>{if(b.textContent!=="Aniqmi?"){b.textContent="Aniqmi?";b.classList.add("danger");return}
+    const {error}=await sb.from("reviews").delete().eq("id",+b.closest(".order").dataset.id);
+    if(error)return fail(error,"O'chmadi");toast("O'chirildi");loadReviews()})}
+
+/* ================= categories & collections ================= */
+async function viewCatalog(){$("#main").innerHTML=`<div class="head"><div><h1>Bo'limlar va kolleksiyalar</h1><p class="sub">Saytdagi kategoriya tugmalari va mavsumiy to'plamlar shu yerdan boshqariladi.</p></div></div><div id="cv"><div class="empty"><span class="spin"></span></div></div>`;
+  try{await Promise.all([loadCats(),products.length?null:loadProducts()])}catch(e){return fail(e,"Bo'limlar")}drawCatalog()}
+const cnt=id=>products.filter(p=>p.category===id).length,ccnt=id=>products.filter(p=>(p.product_collections||[]).some(x=>x.collection_id===id)).length;
+function drawCatalog(){
+  $("#cv").innerHTML=`<div style="display:grid;gap:16px;max-width:900px">
+   <section class="card sec"><h3>Bo'limlar (kategoriyalar)</h3>
+    <div class="hint">"Kiyib ko'rish" o'chiq bo'lsa, shu bo'limdagi hech bir mahsulotda AI tugmasi chiqmaydi (yangi mahsulotda ham avtomatik o'chiq turadi). Oyoq kiyim va aksessuarlarda AI yaxshi ishlamaydi, shuning uchun ular o'chiq.</div>
+    <div style="overflow-x:auto"><table class="stk cat"><thead><tr><th>Kod</th><th>Nomi</th><th>O'lchamlar</th><th>Tartib</th><th>Saytda</th><th>Kiyib ko'rish</th><th>Mahsulot</th><th></th></tr></thead><tbody>
+    ${cats.map(c=>`<tr data-c="${esc(c.id)}"><td><code>${esc(c.id)}</code></td><td><input type="text" data-n value="${esc(c.name)}" maxlength="60"></td><td><input type="text" data-sz value="${esc(c.size_preset.join(", "))}" placeholder="M, L, XL"></td><td><input type="number" data-so value="${c.sort}" step="10" style="width:80px"></td>
+      <td><input type="checkbox" data-a ${c.active?"checked":""}></td><td><input type="checkbox" data-t ${c.tryon_default?"checked":""}></td><td>${cnt(c.id)}</td>
+      <td style="white-space:nowrap"><button class="btn sm" data-sv>Saqlash</button> ${cnt(c.id)?"":`<button class="btn ghost sm" data-del>O'chirish</button>`}</td></tr>`).join("")}
+    </tbody></table></div>
+    <form class="tools" id="cadd"><input type="text" id="cid" placeholder="kod: masalan jackets" pattern="[a-z0-9_\\-]{1,40}" required style="max-width:180px"><input type="text" id="cnm" placeholder="Nomi: Kurtkalar" maxlength="60" required style="max-width:220px"><input type="text" id="csz" placeholder="O'lchamlar: M, L, XL" style="max-width:200px"><button class="btn">+ Bo'lim qo'shish</button></form>
+   </section>
+   <section class="card sec"><h3>Kolleksiyalar</h3>
+    <div class="hint">Masalan "Kuz — Qish 2026". Mahsulotni kolleksiyaga mahsulot oynasidagi "Kolleksiyalar" bo'limidan qo'shasiz. Sana qo'yilsa, faqat shu oraliqda saytda ko'rinadi.</div>
+    <div style="overflow-x:auto"><table class="stk cat"><thead><tr><th>Kod</th><th>Nomi</th><th>Tavsif</th><th>Boshlanishi</th><th>Tugashi</th><th>Saytda</th><th>Mahsulot</th><th></th></tr></thead><tbody>
+    ${cols.map(c=>`<tr data-k="${esc(c.id)}"><td><code>${esc(c.id)}</code></td><td><input type="text" data-n value="${esc(c.name)}" maxlength="80"></td><td><input type="text" data-d value="${esc(c.description)}" maxlength="200"></td>
+      <td><input type="date" data-s value="${c.starts_at?c.starts_at.slice(0,10):""}"></td><td><input type="date" data-e value="${c.ends_at?c.ends_at.slice(0,10):""}"></td>
+      <td><input type="checkbox" data-a ${c.active?"checked":""}></td><td>${ccnt(c.id)}</td><td style="white-space:nowrap"><button class="btn sm" data-sv>Saqlash</button> <button class="btn ghost sm" data-del>O'chirish</button></td></tr>`).join("")||`<tr><td colspan="8" class="muted">Hali kolleksiya yo'q</td></tr>`}
+    </tbody></table></div>
+    <form class="tools" id="kadd"><input type="text" id="kid" placeholder="kod: masalan bahor-2027" pattern="[a-z0-9_\\-]{1,40}" required style="max-width:200px"><input type="text" id="knm" placeholder="Nomi: Bahor 2027" maxlength="80" required style="max-width:240px"><button class="btn">+ Kolleksiya qo'shish</button></form>
+   </section></div>`;
+  const szs=v=>v.split(",").map(x=>x.trim()).filter(Boolean).slice(0,20);
+  const done=async(r,msg)=>{if(r.error)return fail(r.error,"Saqlanmadi");toast(msg);await loadCats();drawCatalog()};
+  $$("#cv tr[data-c]").forEach(tr=>{const id=tr.dataset.c;
+    $("[data-sv]",tr).onclick=async()=>{const name=$("[data-n]",tr).value.trim();if(!name)return toast("Nomini yozing",true);
+      done(await sb.from("categories").update({name,size_preset:szs($("[data-sz]",tr).value),sort:parseInt($("[data-so]",tr).value,10)||0,active:$("[data-a]",tr).checked,tryon_default:$("[data-t]",tr).checked}).eq("id",id),"Saqlandi")};
+    const d=$("[data-del]",tr);if(d)d.onclick=()=>{d.outerHTML=`<span class="confirm">O'chirilsinmi? <button class="btn danger sm" data-y>Ha</button></span>`;$("[data-y]",tr).onclick=async()=>done(await sb.from("categories").delete().eq("id",id),"O'chirildi")}});
+  $$("#cv tr[data-k]").forEach(tr=>{const id=tr.dataset.k;
+    $("[data-sv]",tr).onclick=async()=>{const name=$("[data-n]",tr).value.trim();if(!name)return toast("Nomini yozing",true);const st=$("[data-s]",tr).value,en=$("[data-e]",tr).value;
+      if(st&&en&&en<st)return toast("Tugash sanasi boshlanishidan oldin bo'lmasin",true);
+      done(await sb.from("collections").update({name,description:$("[data-d]",tr).value.trim(),starts_at:st?new Date(st+"T00:00").toISOString():null,ends_at:en?new Date(en+"T23:59:59").toISOString():null,active:$("[data-a]",tr).checked}).eq("id",id),"Saqlandi")};
+    const d=$("[data-del]",tr);d.onclick=()=>{d.outerHTML=`<span class="confirm">Kolleksiya o'chsinmi? Mahsulotlar o'chmaydi. <button class="btn danger sm" data-y>Ha</button></span>`;$("[data-y]",tr).onclick=async()=>{const r=await sb.from("collections").delete().eq("id",id);await loadProducts().catch(()=>{});done(r,"O'chirildi")}}});
+  $("#cadd").onsubmit=async e=>{e.preventDefault();const id=$("#cid").value.trim().toLowerCase();if(!/^[a-z0-9_-]{1,40}$/.test(id))return toast(ERRN.categories_id_check,true);
+    done(await sb.from("categories").insert({id,name:$("#cnm").value.trim(),size_preset:szs($("#csz").value),sort:(cats.reduce((m,c)=>Math.max(m,c.sort),0)+10)}),"Bo'lim qo'shildi")};
+  $("#kadd").onsubmit=async e=>{e.preventDefault();const id=$("#kid").value.trim().toLowerCase();if(!/^[a-z0-9_-]{1,40}$/.test(id))return toast(ERRN.collections_id_check,true);
+    done(await sb.from("collections").insert({id,name:$("#knm").value.trim(),sort:(cols.reduce((m,c)=>Math.max(m,c.sort),0)+10)}),"Kolleksiya qo'shildi")};
+}
+
+/* ================= team (owner only) ================= */
+async function viewTeam(){if(!isOwner)return go("orders");
+  $("#main").innerHTML=`<div class="head"><div><h1>Adminlar</h1><p class="sub">Kim panelga kira oladi. Menejer: buyurtma, mahsulot, izoh, bo'limlar. Ega: hammasi + sozlamalar va adminlar.</p></div></div><div id="tv"><div class="empty"><span class="spin"></span></div></div>`;
+  const {data,error}=await sb.from("admins").select("*").order("created_at");if(error)return fail(error,"Adminlar");
+  $("#tv").innerHTML=`<section class="card sec" style="max-width:760px"><div style="overflow-x:auto"><table class="stk cat"><thead><tr><th>Email</th><th>Huquq</th><th></th></tr></thead><tbody>
+   ${data.map(a=>`<tr data-e="${esc(a.email)}"><td>${esc(a.email)}${a.email===me.email.toLowerCase()?" <span class=muted>(siz)</span>":""}</td><td><select data-r><option value="manager" ${a.role==="manager"?"selected":""}>Menejer</option><option value="owner" ${a.role==="owner"?"selected":""}>Ega</option></select></td>
+     <td style="white-space:nowrap"><button class="btn sm" data-sv>Saqlash</button> ${a.email===me.email.toLowerCase()?"":`<button class="btn ghost sm" data-del>Olib tashlash</button>`}</td></tr>`).join("")}</tbody></table></div>
+   <form class="tools" id="tadd"><input type="email" id="tem" placeholder="email@misol.uz" required style="max-width:260px"><select id="tro" style="width:auto"><option value="manager">Menejer</option><option value="owner">Ega</option></select><button class="btn">+ Qo'shish</button></form>
+   <div class="hint">Qo'shilgan odam shu email bilan Supabase'da hisob ochishi kerak (Authentication → Users → Add user, yoki o'zi "Parolni unutdim" orqali). Bu yerda faqat ruxsat beriladi — parol hech qachon shu sahifada so'ralmaydi.</div></section>`;
+  $$("#tv tr[data-e]").forEach(tr=>{const em=tr.dataset.e;
+    $("[data-sv]",tr).onclick=async()=>{const r=await sb.from("admins").update({role:$("[data-r]",tr).value}).eq("email",em);if(r.error)return fail(r.error,"Saqlanmadi");toast("Saqlandi");viewTeam()};
+    const d=$("[data-del]",tr);if(d)d.onclick=()=>{d.outerHTML=`<span class="confirm">Ruxsat olinsinmi? <button class="btn danger sm" data-y>Ha</button></span>`;$("[data-y]",tr).onclick=async()=>{const r=await sb.from("admins").delete().eq("email",em);if(r.error)return fail(r.error,"Bo'lmadi");toast("Olib tashlandi");viewTeam()}}});
+  $("#tadd").onsubmit=async e=>{e.preventDefault();const em=$("#tem").value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return toast("Email noto'g'ri",true);
+    const r=await sb.from("admins").insert({email:em,role:$("#tro").value});if(r.error)return fail(r.error,"Qo'shilmadi");toast("Qo'shildi");viewTeam()};
+}
+
+/* ================= settings ================= */
+async function viewSettings(){$("#main").innerHTML=`<div class="head"><div><h1>Sozlamalar</h1><p class="sub">Sayt bo'ylab ishlatiladigan ma'lumotlar${isOwner?"":" · <b>faqat ko'rish</b> — o'zgartirishni do'kon egasi qiladi"}</p></div></div><div id="sv"><div class="empty"><span class="spin"></span></div></div>`;
+  const [{data,error},cnt]=await Promise.all([sb.from("settings").select("*"),sb.from("tryon_log").select("id",{count:"exact",head:true}).gte("created_at",new Date(Date.now()-864e5).toISOString())]);
+  if(error)return fail(error,"Sozlamalar");settings=Object.fromEntries(data.map(r=>[r.key,r.value]));const L=settings.tryon_limits||{},PM=settings.payments||{};
+  $("#sv").innerHTML=`<div style="display:grid;gap:16px;max-width:820px">
+   <section class="card sec"><h3>Aloqa</h3><div class="g2"><label class="f"><span>Telegram operator (@siz)</span><input type="text" id="so" value="${esc(settings.operator||"")}"><small>Buyurtma matni shu akkauntga yuboriladi</small></label>
+    <label class="f"><span>Telefon</span><input type="tel" id="sp" value="${esc(settings.phone||"")}" placeholder="+998901234567"></label></div>
+    <label class="f"><span>Sayt manzili</span><input type="text" id="surl" value="${esc(settings.site_url||"")}" placeholder="https://..."><small>To'lov va QR havolalari shu manzilga ishlaydi</small></label></section>
+
+   <section class="card sec"><h3>To'lov usullari</h3>
+    <p class="sub">Mijoz buyurtma berayotganda faqat yoqilgan usullarni ko'radi.</p>
+    <div class="g2">
+      <label class="switch"><input type="checkbox" id="pa1" ${PM.cash_pickup!==false?"checked":""}> Do'konda to'lash (olib ketish)</label>
+      <label class="switch"><input type="checkbox" id="pa2" ${PM.cash_courier!==false?"checked":""}> Kuryerga naqd</label>
+      <label class="switch"><input type="checkbox" id="pa3" ${PM.card_courier?"checked":""}> Kuryerga karta (terminal)</label>
+      <label class="switch"><input type="checkbox" id="pa4" ${PM.transfer?"checked":""}> Kartaga o'tkazish</label>
+    </div>
+    <div class="g2"><label class="f"><span>Karta raqami</span><input type="text" id="pcard" value="${esc(PM.transfer_card||"")}" placeholder="8600 1234 5678 9012"></label>
+     <label class="f"><span>Karta egasi</span><input type="text" id="pname" value="${esc(PM.transfer_name||"")}" placeholder="AYNIMO MCHJ"></label></div>
+    <div class="hint">Kartaga o'tkazishda mijoz chek rasmini yuboradi, buyurtma "Chek tekshirilmoqda" bo'lib turadi. Siz pul kelganini ko'rib, "To'langan" qilib qo'yasiz.</div>
+   </section>
+
+   <section class="card sec"><h3>Onlayn to'lov</h3>
+    <p class="sub">Bular uchun tegishli kompaniya bilan shartnoma va kassa kerak. Ma'lumotlarni kiritmaguningizcha usul mijozga ko'rinmaydi.</p>
+    <label class="switch"><input type="checkbox" id="pm1" ${PM.payme?"checked":""}> Payme</label>
+    <label class="f"><span>Payme merchant ID (kassa)</span><input type="text" id="pmid" value="${esc(PM.payme_merchant||"")}" placeholder="5f3e0c..."></label>
+    <label class="switch"><input type="checkbox" id="pc1" ${PM.click?"checked":""}> Click</label>
+    <div class="g2"><label class="f"><span>Click service_id</span><input type="text" id="pcs" value="${esc(PM.click_service||"")}"></label>
+     <label class="f"><span>Click merchant_id</span><input type="text" id="pcm" value="${esc(PM.click_merchant||"")}"></label></div>
+    <label class="switch"><input type="checkbox" id="pu1" ${PM.uzum?"checked":""}> Uzum</label>
+    <label class="f"><span>Uzum to'lov havolasi</span><input type="text" id="puu" value="${esc(PM.uzum_url||"")}" placeholder="https://...?order={order}&amount={amount}"><small>Uzum bergan havolani qo'ying. {order} va {amount} o'rniga buyurtma raqami va summa qo'yiladi.</small></label>
+    <div class="hint">To'lov kelgani avtomatik tekshirilmaydi — buyurtmani "To'langan" deb siz belgilaysiz. Avtomatik tasdiqlash uchun keyinchalik webhook ulash kerak.</div>
+   </section>
+
+   <section class="card sec"><h3>Izohlar</h3>
+    <label class="switch"><input type="checkbox" id="sre" ${settings.reviews_on!==false?"checked":""}> Mijozlar izoh va rasm yubora olsin</label>
+    <div class="hint">Har bir izoh avval "Izohlar" bo'limiga tushadi. Siz ko'rib chiqib, saytga chiqarasiz.</div></section>
+
+   <section class="card sec"><h3>AI kiyib ko'rish</h3>
+    <label class="f"><span>Usul</span><select id="stm">
+      <option value="widget" ${(settings.tryon_mode||"widget")==="widget"?"selected":""}>AnyWear vidjeti (Decart hisobi orqali)</option>
+      <option value="builtin" ${settings.tryon_mode==="builtin"?"selected":""}>Ichki — Decart API kaliti bilan</option>
+      <option value="off" ${settings.tryon_mode==="off"?"selected":""}>O'chirilgan</option></select>
+      <small>Vidjet: AnyWear'dagi hisobingiz orqali ishlaydi va hisob-kitob o'sha yerda. Ichki: do'kon ekrani (kiosk) va sayt ichidagi o'z oynamiz ishlaydi, Supabase'da DECART_API_KEY kerak.</small></label>
+    <label class="switch"><input type="checkbox" id="ste" ${settings.tryon_enabled!==false?"checked":""}> Yoqilgan</label>
+    <div class="g3"><label class="f"><span>Bir sessiya (soniya)</span><input type="number" id="sl1" value="${L.max_seconds||90}" min="20" max="300"></label>
+     <label class="f"><span>Bir kishiga soatiga</span><input type="number" id="sl2" value="${L.per_ip_hour||4}" min="1" max="30"></label>
+     <label class="f"><span>Kuniga jami</span><input type="number" id="sl3" value="${L.per_day||60}" min="1" max="2000"></label></div>
+    <div class="hint">Yuqoridagi uchta cheklov faqat "Ichki" usulda ishlaydi. Oxirgi 24 soatda: <b>${cnt.count??0}</b> ta sessiya. Narx: Decart'da 1 daqiqa ≈ $1.20. Kunlik eng ko'p xarajat ≈ <b id="scost"></b>.</div></section>
+   <div>${isOwner?`<button class="btn" id="ss">Saqlash</button>`:`<button class="btn" id="ss" disabled title="Faqat ega">Saqlash (faqat ega)</button>`}</div></div>`;
+  const cost=()=>{$("#scost").textContent="$"+((+$("#sl1").value||0)/60*1.2*(+$("#sl3").value||0)).toFixed(0)};cost();["sl1","sl3"].forEach(i=>$("#"+i).oninput=cost);
+  $("#ss").onclick=async()=>{const ph=$("#sp").value.replace(/[^\d+]/g,"");if(ph&&!/^\+998\d{9}$/.test(ph))return toast("Telefon +998XXXXXXXXX ko'rinishida bo'lsin",true);
+    const card=$("#pcard").value.trim();
+    if($("#pa4").checked&&card.replace(/\D/g,"").length<16)return toast("Kartaga o'tkazish uchun karta raqamini to'liq yozing",true);
+    if($("#pm1").checked&&!$("#pmid").value.trim())return toast("Payme uchun merchant ID kerak",true);
+    if($("#pc1").checked&&!($("#pcs").value.trim()&&$("#pcm").value.trim()))return toast("Click uchun service_id va merchant_id kerak",true);
+    const url=$("#surl").value.trim().replace(/\/$/,"");
+    if(url&&!/^https:\/\/[^\s]+$/.test(url))return toast("Sayt manzili https:// bilan boshlansin",true);
+    const rows=[{key:"operator",value:$("#so").value.trim().replace(/^@/,"")},{key:"phone",value:ph},{key:"tryon_enabled",value:$("#ste").checked},
+      {key:"tryon_mode",value:$("#stm").value},{key:"reviews_on",value:$("#sre").checked},{key:"site_url",value:url},
+      {key:"payments",value:{cash_pickup:$("#pa1").checked,cash_courier:$("#pa2").checked,card_courier:$("#pa3").checked,
+        transfer:$("#pa4").checked,transfer_card:card,transfer_name:$("#pname").value.trim(),
+        payme:$("#pm1").checked,payme_merchant:$("#pmid").value.trim(),
+        click:$("#pc1").checked,click_service:$("#pcs").value.trim(),click_merchant:$("#pcm").value.trim(),
+        uzum:$("#pu1").checked,uzum_url:$("#puu").value.trim()}},
+      {key:"tryon_limits",value:{max_seconds:+$("#sl1").value||90,per_ip_hour:+$("#sl2").value||4,per_day:+$("#sl3").value||60}}];
+    const {error}=await sb.from("settings").upsert(rows);if(error)return fail(error,"Saqlanmadi");toast("Saqlandi")}}
+
+init().catch(e=>{fail(e);showLogin()});
+})();
+</script>
+</body>
+</html>
