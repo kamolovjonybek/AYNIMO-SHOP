@@ -265,7 +265,7 @@ main{position:relative;z-index:1;background:var(--graphite)}
 .hc-cards{display:flex;gap:clamp(14px,1.6vw,26px)}
 .hc-card{flex:none;width:clamp(250px,25vw,410px);display:flex;flex-direction:column;gap:14px}
 .hc-card figure{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:var(--chalk)}
-.hc-card figure img{position:absolute;top:0;left:-10%;width:120%;max-width:none;height:100%;object-fit:cover;transition:scale 1.2s var(--ease)}
+.hc-card figure img{position:absolute;top:0;left:-10%;width:120%;max-width:none;height:100%;object-fit:cover;object-position:50% 20%;transition:scale 1.2s var(--ease)}
 .hc-card:hover figure img{scale:1.05}
 .hc-card figure .go{position:absolute;right:14px;bottom:14px;width:46px;height:46px;border-radius:50%;background:var(--chalk);color:var(--ink);display:grid;place-items:center;transform:scale(0);transition:transform .5s var(--ease)}
 .hc-card:hover figure .go{transform:scale(1)}
@@ -376,7 +376,7 @@ main{position:relative;z-index:1;background:var(--graphite)}
 /* ===== LOOKBOOK ===== */
 .lb{position:relative;background:var(--coal);color:var(--fg);overflow:hidden;padding-block:clamp(90px,10vw,150px) clamp(70px,8vw,130px);padding-left:var(--gl);padding-right:var(--gr)}
 .lb-head{position:relative;z-index:3;text-align:center;pointer-events:none;color:var(--fg)}
-.lb-title{font-family:var(--display);font-size:clamp(84px,18vw,320px);line-height:.82;letter-spacing:-.02em;white-space:nowrap}
+.lb-title{font-family:var(--display);font-size:clamp(66px,12vw,188px);line-height:.84;letter-spacing:-.02em;white-space:nowrap}
 .lb-title span{display:inline-block}
 .lb-title em{display:inline-block}
 .lb-marq{position:relative;z-index:2;overflow:hidden;margin:clamp(24px,3vw,44px) calc(var(--gl)*-1) 0 calc(var(--gr)*-1);padding-block:22px;border-block:1px solid rgba(255,255,255,.14)}
@@ -387,15 +387,18 @@ main{position:relative;z-index:1;background:var(--graphite)}
 .lb-end{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-top:clamp(40px,6vw,90px)}
 .lb-end p{font-family:var(--display);font-size:clamp(26px,3.4vw,52px);line-height:1.12}
 .lb-sub{margin-top:18px;font-size:14px;color:var(--fg2)}
-.lb-cols{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,30px);margin-top:clamp(36px,5vw,80px)}
-.lb-col{display:flex;flex-direction:column;gap:clamp(12px,2vw,30px)}
-.lb-col:nth-child(2){padding-top:7vw}
-.lb-col:nth-child(3){padding-top:3vw}
-.lb figure{position:relative;overflow:hidden;border-radius:3px;cursor:pointer;background:var(--graphite)}
-.lb figure img{width:100%;height:auto;transform:scale(1.1);transition:filter .6s}
-.lb figure figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;display:flex;justify-content:space-between;gap:10px;font-size:13px;background:linear-gradient(transparent,rgba(0,0,0,.6));opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .6s var(--ease)}
-.lb figure:hover figcaption{opacity:1;transform:none}
-.lb figure figcaption b{font-weight:500}
+.lb-rail{position:relative;z-index:1;display:flex;gap:clamp(12px,1.4vw,22px);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin:clamp(34px,5vw,66px) calc(var(--gr)*-1) 0 calc(var(--gl)*-1);padding:0 var(--gr) 8px var(--gl);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.lb-rail::-webkit-scrollbar{display:none}
+.lb-rail.drag{scroll-snap-type:none;cursor:grabbing}
+.lb-rail.drag *{pointer-events:none}
+.lb-card{flex:none;width:clamp(258px,25vw,392px);scroll-snap-align:start;cursor:pointer}
+.lb-card figure{position:relative;margin:0;aspect-ratio:3/4;overflow:hidden;border-radius:3px;background:var(--graphite)}
+.lb-card figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;transform:none;transition:transform 1.2s var(--ease)}
+.lb-card:hover figure img{transform:scale(1.05)}
+.lb-card figcaption{position:absolute;left:0;right:0;bottom:0;padding:44px 14px 15px;display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--fg);background:linear-gradient(transparent,rgba(0,0,0,.66))}
+.lb-card figcaption b{font-weight:500}
+.lb-prog{position:relative;z-index:2;height:1px;background:rgba(255,255,255,.16);margin:26px var(--gr) 0 var(--gl)}
+.lb-prog i{display:block;height:100%;background:var(--fg);transform:scaleX(.2);transform-origin:left;transition:transform .3s}
 
 /* ===== NUMBERS ===== */
 .nums{background:var(--mist);color:var(--ink);display:grid;grid-template-columns:repeat(4,1fr);padding-block:clamp(70px,8vw,120px);padding-left:var(--gl);padding-right:var(--gr)}
@@ -659,10 +662,8 @@ main{position:relative;z-index:1;background:var(--graphite)}
   .st-item{min-height:0;padding-block:34px 44px}
   .st-item figure.m{display:block;aspect-ratio:4/5;overflow:hidden;border-radius:4px;margin-bottom:24px;background:var(--mist)}
   .st-item figure.m img{width:100%;height:100%;object-fit:cover;object-position:50% 8%}
-  .lb-cols{grid-template-columns:1fr 1fr;margin-top:28px}
-  .lb-col:nth-child(2){padding-top:12vw}
-  .lb figure img{transform:none}
-  .lb figure figcaption{opacity:1;transform:none;padding:30px 10px 10px;font-size:12px}
+  .lb-card{width:76vw}
+  .lb-card figcaption{padding:34px 12px 12px;font-size:12px}
   .nums{grid-template-columns:1fr 1fr;row-gap:40px}
   .nm:nth-child(3){border-left:0;padding-left:0}
   .shophead h2{font-size:clamp(52px,15vw,80px)}
@@ -1015,7 +1016,8 @@ dialog.priv::backdrop{background:rgba(10,11,13,.6)}
 <!-- ============ LOOKBOOK ============ -->
 <section class="lb" id="lookbook" data-theme="dark" aria-label="Lookbook">
   <div class="lb-head"><h2 class="lb-title"><span id="lbA">Look</span><em id="lbB">book</em></h2><p class="lb-sub">Do'konlarimizdan kadrlar · rasmni bosing</p></div>
-  <div class="lb-cols" id="lbCols"></div>
+  <div class="lb-rail" id="lbCols" data-cursor="Surish"></div>
+  <div class="lb-prog"><i id="lbBar"></i></div>
   <div class="lb-marq" aria-hidden="true"><div class="lb-track"><span>Casual</span><i>✦</i><em>Klassik</em><i>✦</i><span>Aynimo</span><i>✦</i><em>Kuz — Qish 2026</em><i>✦</i><span>Casual</span><i>✦</i><em>Klassik</em><i>✦</i><span>Aynimo</span><i>✦</i><em>Kuz — Qish 2026</em><i>✦</i></div></div>
   <div class="lb-end"><p>Har bir obraz — do'konlarimizda mavjud.<br>O'zingiznikini toping.</p><a class="btn" href="#katalog" data-magnetic>Katalogni ochish <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a></div>
 </section>
@@ -1413,10 +1415,16 @@ function setStory(i){if(i===stCur)return;const f=stFigs[i];f.style.transition="n
 
 /* ================= LOOKBOOK ================= */
 const LB=[["lb1","12909"],["lbs-4","13114"],["lb2","13199"],["lbs-5","11741"],["lb3","13170"],["lbs-6","13043"],["lb4","13114"],["lbs-7","12996"],["lb5","12978"],["lbs-8","12531"],["lb6","13207"],["lbs-9","12909"],["lb7","13204"],["lbs-10","13199"],["lb8","12950"],["lb9","13056"]].filter(([s])=>ED[s]);
-function buildLB(n){const cols=Array.from({length:n},()=>[]),hh=Array(n).fill(0);LB.forEach(x=>{const e=ED[x[0]],r=e?e.h/e.w:1.25;let k=0;hh.forEach((v,j)=>{if(v<hh[k]-.01)k=j});cols[k].push(x);hh[k]+=r+.04});
-  $("#lbCols").innerHTML=cols.map(c=>`<div class="lb-col">${c.map(([s,id])=>{const p=PID(id);return `<figure data-pid="${id}" data-cursor="Ko'rish">${slotImg(s,p?p.n:"")}${p?`<figcaption><b>${p.n}</b><span>${fmt(p.p)}</span></figcaption>`:""}</figure>`}).join("")}</div>`).join("")}
-buildLB(mobile?2:3);
-$("#lbCols").addEventListener("click",e=>{const f=e.target.closest("figure[data-pid]");if(f){const p=PID(f.dataset.pid);if(p)openQV(p)}});
+const lbRail=$("#lbCols"),lbBar=$("#lbBar");
+function lbUpd(){if(!lbBar)return;const m=lbRail.scrollWidth-lbRail.clientWidth;lbBar.style.transform=`scaleX(${m>0?clamp((lbRail.scrollLeft+lbRail.clientWidth)/lbRail.scrollWidth,.12,1):1})`}
+function buildLB(){lbRail.innerHTML=LB.map(([s,id])=>{const p=PID(id);return `<article class="lb-card" data-pid="${id}" data-cursor="Ko'rish"><figure>${slotImg(s,p?p.n:"")}${p?`<figcaption><b>${p.n}</b><span>${fmt(p.p)}</span></figcaption>`:""}</figure></article>`}).join("");lbUpd()}
+buildLB();
+lbRail.addEventListener("scroll",lbUpd,{passive:true});
+let ld=null,ldMoved=false;
+lbRail.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse"||e.button!==0)return;ld={x:e.clientX,s:lbRail.scrollLeft};ldMoved=false});
+addEventListener("pointermove",e=>{if(!ld)return;const dx=e.clientX-ld.x;if(!ldMoved&&Math.abs(dx)>6){ldMoved=true;lbRail.classList.add("drag")}if(ldMoved)lbRail.scrollLeft=ld.s-dx});
+addEventListener("pointerup",()=>{if(!ld)return;ld=null;if(ldMoved){lbRail.classList.remove("drag");setTimeout(()=>ldMoved=false,40)}});
+lbRail.addEventListener("click",e=>{if(ldMoved)return;const f=e.target.closest(".lb-card[data-pid]");if(f){const p=PID(f.dataset.pid);if(p)openQV(p)}});
 
 /* ================= CATALOG ================= */
 let gcat="all",gsub="",gq="",gsort="rec";
@@ -1703,15 +1711,10 @@ function initScroll(){
   G.from("#arrTrack .ac",{x:140,opacity:0,duration:1.3,ease:"expo.out",stagger:.07,scrollTrigger:{trigger:"#arrTrack",start:"top 86%",once:true}});
   // story
 
-  // lookbook: columns drift at different speeds
-  mm.add({d:"(min-width:821px)",m:"(max-width:820px)"},ctx=>{const d=ctx.conditions.d;buildLB(d?3:2);
-    if(!d){$$("#lbCols figure").forEach(f=>G.from(f,{y:40,opacity:0,duration:.9,ease:"expo.out",scrollTrigger:{trigger:f,start:"top 92%",once:true}}));return}
-    /* columns only drift DOWN from their place, so they never slide up over the title */
-    const sp=[[3,0],[6,0],[2,0]];
-    $$("#lbCols .lb-col").forEach((c,i)=>G.fromTo(c,{yPercent:sp[i][0]},{yPercent:sp[i][1],ease:"none",scrollTrigger:{trigger:"#lbCols",start:"top bottom",end:"bottom bottom",scrub:true}}));
-    $$("#lbCols figure img").forEach(im=>G.fromTo(im,{scale:1.15},{scale:1,ease:"none",scrollTrigger:{trigger:im.parentNode,start:"top bottom",end:"bottom top",scrub:true}}));
-    G.fromTo("#lbA",{xPercent:-40},{xPercent:0,ease:"none",scrollTrigger:{trigger:"#lookbook",start:"top bottom",end:"top 15%",scrub:true}});
-    G.fromTo("#lbB",{xPercent:40},{xPercent:0,ease:"none",scrollTrigger:{trigger:"#lookbook",start:"top bottom",end:"top 15%",scrub:true}})});
+  // lookbook: horizontal rail
+  G.from("#lbCols .lb-card",{x:120,opacity:0,duration:1.1,ease:"expo.out",stagger:.06,scrollTrigger:{trigger:"#lbCols",start:"top 88%",once:true}});
+  G.fromTo("#lbA",{xPercent:-40},{xPercent:0,ease:"none",scrollTrigger:{trigger:"#lookbook",start:"top bottom",end:"top 15%",scrub:true}});
+  G.fromTo("#lbB",{xPercent:40},{xPercent:0,ease:"none",scrollTrigger:{trigger:"#lookbook",start:"top bottom",end:"top 15%",scrub:true}});
   // numbers count up
   $$(".nm b[data-count]").forEach(b=>{const n=+b.dataset.count,suf=b.dataset.suf||"",o={v:0};
     G.to(o,{v:n,duration:1.8,ease:"power3.out",onUpdate:()=>{b.textContent=Math.round(o.v)+suf},scrollTrigger:{trigger:b,start:"top 90%",once:true}})});
